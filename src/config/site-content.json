@@ -5,22 +5,22 @@
 		"username": "Past"
 	},
 	"theme": {
-		"colorBrand": "#de4331",
-		"colorPrimary": "#4E3F42",
+		"colorBrand": "#4fae6a",
+		"colorPrimary": "#334f52",
 		"colorSecondary": "#7b888e",
-		"colorBrandSecondary": "#FCC841",
-		"colorBg": "#eeeeee",
+		"colorBrandSecondary": "#f6e27a",
+		"colorBg": "#f6f4e8",
 		"colorBorder": "#ffffff",
 		"colorCard": "#ffffff66",
 		"colorArticle": "#ffffffcc"
 	},
 	"backgroundColors": [
-		"#FCC841",
-		"#DFEFFC",
-		"#DEDE92",
-		"#DE4331",
-		"#FE9750",
-		"#FCC841"
+		"#EDDD62",
+		"#7ee787",
+		"#88E6E5",
+		"#dff5d8",
+		"#bfe8c2",
+		"#b9c78d"
 	],
 	"artImages": [
 		{
@@ -50,6 +50,13 @@
 			"value": "gx_21_nlfg@mail.ustc.edu.cn",
 			"label": "",
 			"order": 1
+		},
+		{
+			"id": "button-1774165856004",
+			"type": "qq",
+			"value": "1666417849",
+			"label": "",
+			"order": 3
 		}
 	],
 	"clockShowSeconds": false,
