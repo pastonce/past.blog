@@ -1,5 +1,17 @@
 [
   {
+    "slug": "code-to-run",
+    "title": "[C++ 自学 1] | 从代码到运行，C++的简单工作流程",
+    "tags": [
+      "C++自学"
+    ],
+    "date": "2026-03-23T16:04",
+    "summary": "从一个Hello World程序开始，简单了解C++程序进入运行前需要经历什么过程",
+    "cover": "/blogs/code-to-run/d9dd968ca5088428.png",
+    "hidden": false,
+    "category": ""
+  },
+  {
     "slug": "first-article",
     "title": "真正意义上的第一篇文章！纪念博客创建第一天",
     "tags": [
