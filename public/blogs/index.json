@@ -1,5 +1,15 @@
 [
   {
+    "slug": "todo-honkai-auto",
+    "title": "待完成，星穹铁道清日常周常的自动化工具",
+    "tags": [],
+    "date": "2026-03-23T16:33",
+    "summary": "星铁自动化脚本工具开发计划",
+    "cover": "/blogs/todo-honkai-auto/531950775ececaa5.png",
+    "hidden": false,
+    "category": "计划"
+  },
+  {
     "slug": "code-to-run",
     "title": "[C++自学 1] | 从代码到运行，C++的简单工作流程",
     "tags": [],
