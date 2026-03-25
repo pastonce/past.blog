@@ -1,6 +1,9 @@
 {
   "title": "[C++自学 2] | C++编译器与链接器",
-  "tags": [],
+  "tags": [
+    "C++",
+    "学习"
+  ],
   "date": "2026-03-24T09:58",
   "summary": "简单了解C++编译器和链接器的工作内容",
   "cover": "/blogs/compiler-and-linker/197004700d4e4dfe.png",
