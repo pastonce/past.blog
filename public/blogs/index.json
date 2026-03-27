@@ -1,5 +1,18 @@
 [
   {
+    "slug": "pointer-reference",
+    "title": "[C++自学 4] | C++指针与引用",
+    "tags": [
+      "C++",
+      "学习"
+    ],
+    "date": "2026-03-27T15:01",
+    "summary": "简单了解C++的指针与引用。(C++条件与分支、控制流语句部分没太多新东西，不作记录)",
+    "cover": "/blogs/pointer-reference/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "variable-function",
     "title": "[C++自学 3] | C++变量、函数与头文件",
     "tags": [
