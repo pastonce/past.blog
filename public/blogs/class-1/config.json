@@ -1,0 +1,12 @@
+{
+  "title": "[C++自学 5] | C++类-1",
+  "tags": [
+    "C++",
+    "学习"
+  ],
+  "date": "2026-03-28T21:21",
+  "summary": "简单介绍C++中类的概念和特点，且使用日志管理器Log类的初步实现作为示例",
+  "cover": "/blogs/class-1/197004700d4e4dfe.png",
+  "hidden": false,
+  "category": "C++自学"
+}
