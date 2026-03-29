@@ -1,5 +1,18 @@
 [
   {
+    "slug": "static-keyword",
+    "title": "[C++自学 6] | C++中的static关键字",
+    "tags": [
+      "C++",
+      "学习"
+    ],
+    "date": "2026-03-29T22:08",
+    "summary": "学习C++中static关键字的使用与特性",
+    "cover": "/blogs/static-keyword/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "class-1",
     "title": "[C++自学 5] | C++类-1",
     "tags": [
