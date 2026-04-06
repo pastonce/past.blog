@@ -8,6 +8,6 @@
   "date": "2026-04-03T21:32",
   "summary": "总结一下第一次使用D3.js进行数据可视化的经验与成果",
   "cover": "/blogs/data-visualization-iris/89de52262b043cca.png",
-  "hidden": true,
+  "hidden": false,
   "category": ""
 }
