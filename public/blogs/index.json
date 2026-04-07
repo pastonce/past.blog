@@ -1,5 +1,18 @@
 [
   {
+    "slug": "const-keyword",
+    "title": "[C++自学 11] | C++中的CONST关键字",
+    "tags": [
+      "C++",
+      "学习"
+    ],
+    "date": "2026-04-07T11:39",
+    "summary": "学习C++的const关键字在三种场景中的用法，简单提一下mutable关键字",
+    "cover": "/blogs/const-keyword/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "string-in-cplusplus",
     "title": "[C++自学 10] | C++字符串",
     "tags": [
