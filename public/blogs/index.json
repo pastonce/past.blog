@@ -1,5 +1,18 @@
 [
   {
+    "slug": "class-4",
+    "title": "[C++自学 12] | C++类-4-成员初始化列表",
+    "tags": [
+      "C++",
+      "学习"
+    ],
+    "date": "2026-04-08T19:48",
+    "summary": "未完待续...",
+    "cover": "/blogs/class-4/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "const-keyword",
     "title": "[C++自学 11] | C++中的CONST关键字",
     "tags": [
