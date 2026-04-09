@@ -50,7 +50,7 @@
     "summary": "总结一下第一次使用D3.js进行数据可视化的经验与成果",
     "cover": "/blogs/data-visualization-iris/89de52262b043cca.png",
     "hidden": false,
-    "category": ""
+    "category": "课程探索"
   },
   {
     "slug": "use-of-array",
@@ -191,6 +191,6 @@
     "summary": "本博客第一篇文章，也是创建博客的初心",
     "cover": "/blogs/first-article/9f781f829b8190c2.jpeg",
     "hidden": false,
-    "category": ""
+    "category": "计划"
   }
 ]
