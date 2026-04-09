@@ -1,5 +1,18 @@
 [
   {
+    "slug": "class-5",
+    "title": "[C++自学 13] | C++类-5-new、this关键字以及运算符重载",
+    "tags": [
+      "C++",
+      "学习"
+    ],
+    "date": "2026-04-09T17:38",
+    "summary": "学习C++类中的堆上创建与销毁的new/delete关键字、引用实例本身的this关键字以及提高类操作可读性的运算符重载方法",
+    "cover": "/blogs/class-5/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "class-4",
     "title": "[C++自学 12] | C++类-4-成员初始化列表、隐式转换与explict关键字",
     "tags": [
