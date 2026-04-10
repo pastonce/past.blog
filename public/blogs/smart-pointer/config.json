@@ -1,0 +1,12 @@
+{
+  "title": "[C++自学 14] | C++智能指针",
+  "tags": [
+    "C++",
+    "学习"
+  ],
+  "date": "2026-04-10T23:17",
+  "summary": "介绍C++的memory标准库中三种可以自动管理内存的智能指针用法",
+  "cover": "/blogs/smart-pointer/197004700d4e4dfe.png",
+  "hidden": false,
+  "category": "C++自学"
+}
