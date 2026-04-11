@@ -1,5 +1,18 @@
 [
   {
+    "slug": "class-6",
+    "title": "[C++自学 15] | C++类-6-复制与拷贝构造函数",
+    "tags": [
+      "C++",
+      "学习"
+    ],
+    "date": "2026-04-11T12:01",
+    "summary": "介绍C++中浅拷贝的存在以及会造成的问题，学习如何通过一个拷贝构造函数实现类实例的深拷贝",
+    "cover": "/blogs/class-6/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "smart-pointer",
     "title": "[C++自学 14] | C++智能指针",
     "tags": [
