@@ -1,5 +1,18 @@
 [
   {
+    "slug": "vector-dynamic-array",
+    "title": "[C++自学 16] | C++Vector动态数组",
+    "tags": [
+      "C++",
+      "学习"
+    ],
+    "date": "2026-04-12T21:58",
+    "summary": "学习C++标准模板库中的Vector容器（功能上应该称为动态数组）的基础用法和优化",
+    "cover": "/blogs/vector-dynamic-array/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "class-6",
     "title": "[C++自学 15] | C++类-6-复制与拷贝构造函数",
     "tags": [
