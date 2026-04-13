@@ -1,5 +1,18 @@
 [
   {
+    "slug": "class-7",
+    "title": "[C++自学 17] | C++类-7-箭头运算符",
+    "tags": [
+      "C++",
+      "学习"
+    ],
+    "date": "2026-04-13T19:47",
+    "summary": "未完待续...",
+    "cover": "/blogs/class-7/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "vector-dynamic-array",
     "title": "[C++自学 16] | C++Vector动态数组",
     "tags": [
