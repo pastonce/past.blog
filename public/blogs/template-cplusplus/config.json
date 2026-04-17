@@ -1,0 +1,12 @@
+{
+  "title": "[C++自学 18] | C++模板template",
+  "tags": [
+    "C++",
+    "学习"
+  ],
+  "date": "2026-04-17T21:30",
+  "summary": "简要了解C++中模板的重要概念与用法，它是泛型编程的基础",
+  "cover": "/blogs/template-cplusplus/197004700d4e4dfe.png",
+  "hidden": false,
+  "category": "C++自学"
+}
