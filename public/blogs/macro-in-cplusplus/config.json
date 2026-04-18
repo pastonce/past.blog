@@ -1,0 +1,12 @@
+{
+  "title": "[C++自学 19] | C++宏",
+  "tags": [
+    "C++",
+    "学习"
+  ],
+  "date": "2026-04-18T22:42",
+  "summary": "简单了解C++中的宏及基础用法，一般通过#define预处理指令定义",
+  "cover": "/blogs/macro-in-cplusplus/197004700d4e4dfe.png",
+  "hidden": false,
+  "category": "C++自学"
+}
