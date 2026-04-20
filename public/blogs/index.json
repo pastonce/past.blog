@@ -1,5 +1,18 @@
 [
   {
+    "slug": "auto-multi-return",
+    "title": "[C++自学 19] | C++中的auto关键字以及多返回值处理",
+    "tags": [
+      "C++",
+      "学习"
+    ],
+    "date": "2026-04-20T22:27",
+    "summary": "了解C++中auto关键字的用法与优劣，展示多种处理多返回值的方法",
+    "cover": "/blogs/auto-multi-return/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "macro-in-cplusplus",
     "title": "[C++自学 19] | C++宏",
     "tags": [
