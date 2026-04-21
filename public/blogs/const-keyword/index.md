@@ -75,12 +75,5 @@ int main() {
 * 被`const`修饰的方法无法在其内部对任何普通变量（`m_X=2`）进行修改，否则会报错
 * **类实例的常量引用只能调用被`const`修饰的方法**，否则不能保证该方法是否会违背常量引用的限制（即使该方法的函数体中未修改），会报错（`e.SetX(4)`）
 * `mutable`关键字定义的变量**允许常量方法进行修改**，且常量引用调用该方法时也不会报错，一般用于开发调试（如调试类中常量方法被调用了多少次）
-* 另外，`mutable`还可用于`lambda`函数中，在值传递时添加`mutable`修饰可以允许传入变量在内部进行改变
-
-```c++
-auto f = [=]() mutable {
-    x++
-    std::cout << x << std::endl;
-};
-```
+* 另外，`mutable`还可用于`lambda`函数中，详见[[C++自学 21] | C++原始函数指针与lambda函数](http://past-blog.vercel.app/blog/pointer-lambda-function)
 
