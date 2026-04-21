@@ -60,5 +60,9 @@ int main() {
 }
 ```
 
-* 在栈上定义的数组可以通过`sizeof(数组名)/sizeof(成员类型)`的方式计算大小
+* **在栈上定义**的数组可以通过`sizeof(数组名)/sizeof(成员类型)`的方式计算大小
 * C++标准库中的`array`类型，支持越界检查等安全保护，同时可以通过`array.size()`获取数组大小
+* `std::array`的性能最快可与原始数组相同，且并不占用额外大小（`.size()`仅仅只是返回模板参数）
+* 通过设置`_ITERATOR_DEBUG_LEVEL = 2`可以开启越界检查
+
+**C++动态数组详见[[C++自学 16] | C++Vector动态数组](https://past-blog.vercel.app/blog/vector-dynamic-array)*
