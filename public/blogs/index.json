@@ -1,5 +1,18 @@
 [
   {
+    "slug": "pointer-lambda-function",
+    "title": "[C++自学 21] | C++原始函数指针与lambda函数",
+    "tags": [
+      "C++",
+      "自学"
+    ],
+    "date": "2026-04-21T16:16",
+    "summary": "学习C风格的原始函数指针以及C++中独特的lambda匿名函数的用法",
+    "cover": "/blogs/pointer-lambda-function/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "auto-multi-return",
     "title": "[C++自学 20] | C++中的auto关键字以及多返回值处理",
     "tags": [
