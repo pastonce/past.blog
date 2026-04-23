@@ -1,0 +1,12 @@
+{
+  "title": "[C++自学 22] | C++命名空间与类型转换",
+  "tags": [
+    "C++",
+    "学习"
+  ],
+  "date": "2026-04-23T21:58",
+  "summary": "学习C++中的namespace命名空间与四种C++风格的强制类型转换方法",
+  "cover": "/blogs/namespace-and-cast/197004700d4e4dfe.png",
+  "hidden": false,
+  "category": "C++自学"
+}
