@@ -1,5 +1,18 @@
 [
   {
+    "slug": "pun-union-virtual",
+    "title": "[C++自学 23] | C++类-8-类型双关、联合体与虚析构函数",
+    "tags": [
+      "C++",
+      "学习"
+    ],
+    "date": "2026-04-24T22:23",
+    "summary": "学习类型双关（C风格的reinterpret_cast）、基于类型双关的联合体union以及虚析构函数的用法",
+    "cover": "/blogs/pun-union-virtual/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "namespace-and-cast",
     "title": "[C++自学 22] | C++命名空间与类型转换",
     "tags": [
