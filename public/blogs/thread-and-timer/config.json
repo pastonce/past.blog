@@ -1,0 +1,12 @@
+{
+  "title": "[C++自学 24] | C++线程与计时",
+  "tags": [
+    "C++",
+    "学习"
+  ],
+  "date": "2026-04-25T22:20",
+  "summary": "简单了解C++中线程（thread库）与计时（chrono库）的使用方法，介绍了一种自动计时器的写法",
+  "cover": "/blogs/thread-and-timer/197004700d4e4dfe.png",
+  "hidden": false,
+  "category": "C++自学"
+}
