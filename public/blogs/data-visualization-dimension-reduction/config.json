@@ -1,0 +1,14 @@
+{
+  "title": "高维数据降维算法与可视化",
+  "tags": [
+    "PCA",
+    "t-SNE",
+    "数据可视化",
+    "学习"
+  ],
+  "date": "2026-04-27T16:39",
+  "summary": "调研并实现了PCA和t-SNE这两种高维数据降维算法，通过在MNIST数据子集上的实际运用，并将结果以可视化领域的水平呈现，更深入地学习到了降维相关的知识和经验。",
+  "cover": "/blogs/data-visualization-dimension-reduction/b5de66e34fb6ebb7.png",
+  "hidden": false,
+  "category": ""
+}
