@@ -37,12 +37,14 @@
 * 实现成果：（其中三维散点图主要使用了`three.js`以及`OrbitControls.js`工具）
 
 <iframe
-	src='https://pastonce.github.io/data_visualization/homework1'
+	src='https://pastonce.github.io/data_visualization/homework1/homework1'
 	style={{ border: 0 }}
 	allowfullscreen
 	width="100%"
 	height="600px"
 	loading='lazy'></iframe>
+
+[点击跳转源网页](https://pastonce.github.io/data_visualization/homework1/homework1)
 
 * 交互说明
     - 二维散点图：鼠标移动到图例上会突出显示该类全部样本；鼠标移动到样本点上会显示该样本详细数据
