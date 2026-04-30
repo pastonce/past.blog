@@ -1,5 +1,18 @@
 [
   {
+    "slug": "structed-bindings",
+    "title": "[C++自学 25] | C++结构化绑定",
+    "tags": [
+      "C++",
+      "学习"
+    ],
+    "date": "2026-04-30T22:13",
+    "summary": "学习C++17及以上版本才支持的结构化绑定特性。",
+    "cover": "/blogs/structed-bindings/197004700d4e4dfe.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "data-visualization-dimension-reduction",
     "title": "高维数据降维算法与可视化",
     "tags": [
