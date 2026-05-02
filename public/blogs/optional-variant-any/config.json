@@ -1,0 +1,12 @@
+{
+  "title": "[C++自学 26] | C++如何处理特殊类型要求",
+  "tags": [
+    "C++",
+    "学习"
+  ],
+  "date": "2026-05-02T22:04",
+  "summary": "介绍C++17及以上版本中特性，即标准库中三个不同用法的类，optional、variant和any.",
+  "cover": "/blogs/optional-variant-any/197004700d4e4dfe.png",
+  "hidden": false,
+  "category": "C++自学"
+}
