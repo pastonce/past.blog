@@ -1,0 +1,12 @@
+{
+  "title": "[C++自学 28] | C++跟踪内存与字符串使用优化",
+  "tags": [
+    "C++",
+    "学习"
+  ],
+  "date": "2026-05-15T22:17",
+  "summary": "介绍一种通用的跟踪内存的方法，并探究std::string为什么慢以及如何优化",
+  "cover": "/blogs/memory-tracking-string-optimize/197004700d4e4dfe.png",
+  "hidden": false,
+  "category": "C++自学"
+}
