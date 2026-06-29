@@ -74,10 +74,51 @@ int main() {
 
     * `static_cast`：主要用于**基本数据类型**的转换以及父类子类之间指针或引用的**上行转换**
 
-    * `dynamic_cast`：在运行时执行转换，并对类的类型进行检查，确保转换的安全性；主要用于父类子类之间指针或引用的**下行转换**，转换失败返回`nullptr`（指针）或抛出异常（引用）；在进行下行转换时，可以在运行时检查父类指针或引用是否实际指向一个子类对象
+    * `dynamic_cast`：在运行时执行转换，并对类的类型进行检查，确保转换的安全性；主要用于父类子类之间指针或引用的**下行转换**，转换失败返回`nullptr`（指针）或抛出异常（引用）；在进行下行转换时，可以在运行时检查父类指针或引用是否实际指向一个子类对象；**需要打开RTTI运行时类型信息选项**。示例代码见最后。
 
     * `const_cast`：用于移除或添加类型的`const`属性，**不改变类型本身**
 
     * `reinterpret_cast`：允许在不同类型之间进行二进制级别的类型转换，不会进行任何类型检查，只是**重新解释二进制位的含义**
 
+```c++
+#include <iostream>
+     
+class Animal {
+public:
+    virtual ~Animal() {}
+    virtual void sound() const {
+        std::cout << "Animal makes a sound" << std::endl;
+    }
+};
+class Dog : public Animal {
+public:
+    void sound() const override {
+        std::cout << "Dog barks" << std::endl;
+    }
+    void fetch() const {
+        std::cout << "Dog fetches the ball" << std::endl;
+    }
+};
+class Cat : public Animal {
+public:
+    void sound() const override {
+        std::cout << "Cat meows" << std::endl;
+    }
+};
+    
+    
+int main() {
+    Dog myDog;
+    Animal* animalPtr = static_cast<Animal*>(&myDog);  // 静态上行转换
+    animalPtr->sound();  // 调用的是 Dog 的 sound，因为它是虚函数
+        
+    Dog* dogPtr = dynamic_cast<Dog*>(animalPtr); // 动态下行转换
+    if (dogPtr) {
+        dogPtr->sound();
+        dogPtr->fetch();
+    } else {
+        std::cout << "Conversation failed!" << std::endl;
+    }
+}
+```
         
