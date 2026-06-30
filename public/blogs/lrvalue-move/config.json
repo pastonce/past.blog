@@ -1,0 +1,12 @@
+{
+  "title": "[C++自学 29] | C++类-10-左值和右值、std::move与移动语义",
+  "tags": [
+    "C++",
+    "自学"
+  ],
+  "date": "2026-06-30T22:44",
+  "summary": "详细介绍了C++中的左值与右值，std::move的作用以及为了支持移动语义所需的移动构造函数和移动赋值运算符",
+  "cover": "/blogs/lrvalue-move/197004700d4e4dfe.png",
+  "hidden": false,
+  "category": "C++自学"
+}
