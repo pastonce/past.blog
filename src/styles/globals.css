@@ -171,6 +171,28 @@
 	}
 }
 
+.shiki {
+  counter-reset: line;
+}
+
+.shiki .line {
+  display: block;
+}
+
+.shiki .line::before {
+  counter-increment: line;
+  content: counter(line);
+
+  display: inline-block;
+  width: 3em;
+  margin-right: 1em;
+
+  text-align: right;
+  color: #888;
+
+  user-select: none;
+}
+
 .heartbeat-container:hover {
 	.heartbeat {
 		animation: heartbeat-frame 0.8s ease-in-out;
