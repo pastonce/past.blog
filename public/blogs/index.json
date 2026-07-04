@@ -1,5 +1,19 @@
 [
   {
+    "slug": "Standard-Template-Library",
+    "title": "[STL 1] | C++ STL体系结构基础",
+    "tags": [
+      "C++",
+      "STL",
+      "学习"
+    ],
+    "date": "2026-07-04T14:15",
+    "summary": "学习C++ STL的第一课：了解STL的概念、主要组成部分以及各部分之间的关系",
+    "cover": "/blogs/Standard-Template-Library/38893d671e7adc6b.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "lrvalue-move",
     "title": "[C++自学 29] | C++类-10-左值和右值、std::move与移动语义",
     "tags": [
