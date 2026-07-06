@@ -6,7 +6,7 @@
     "学习"
   ],
   "date": "2026-07-04T14:15",
-  "summary": "学习C++ STL的第一课：了解STL的概念、主要组成部分以及各部分之间的关系",
+  "summary": "学习C++ STL的第一课：了解STL的概念和主要组成部分，介绍了学习STL源码必要的技术基础",
   "cover": "/blogs/Standard-Template-Library/38893d671e7adc6b.png",
   "hidden": false,
   "category": "C++自学"

@@ -6,6 +6,8 @@
 
 STL全称`Standard Template Library`，即标准模板库，是一套功能强大的 C++ 模板类和函数的集合，它提供了一系列通用的、可复用的算法和数据结构。STL是**基于泛型编程设计**的，这意味着使用模板可以编写出独立于任何特定数据类型的代码（详见[[C++自学 18] | C++模板template](https://past-blog.vercel.app/blog/template-cplusplus)）。
 
+*OOP（Object-Oriented Programming）指面向对象编程，致力于将数据和操作数据的方法关联在一起（如一个类中需要包含数据和方法）；而GP（Generic Programming）指泛型编程，这种思想则企图将数据和方法分离。*
+
 C++标准库往往以头文件的形式呈现，大致可分为三类：
 
 * C++ STL头文件：不带`.h`后缀，如 `#include <vector>`
@@ -14,7 +16,7 @@ C++标准库往往以头文件的形式呈现，大致可分为三类：
 
 其中，**只有旧式C头文件不封装于`std`命名空间**（详见[[C++自学 22] | C++命名空间与类型转换](https://past-blog.vercel.app/blog/namespace-and-cast)）。
 
-## STL六大部件
+## 六大部件
 
 STL主要由六大部件组成，分别为容器**Container**、分配器**Allocator**、算法**Algorithm**、迭代器**Iterator**、适配器**Adapter**与仿函数**Functor**.
 
@@ -50,7 +52,62 @@ int main() {
 * 其中，`vector` 是一个 Container，`count_if` 是一个 Algorithm，`vi.begin()`和`vi.end()`是 Iterator，`less`是一个 Functor，而`bind2nd`和`not1`都是修饰`less`的 Adapter. 
 * 同时在使用这些部件时，均标注了`std`命名空间
 
-## 前闭后开区间
+## 技术基础
+
+### 运算符重载
+
+由于STL是泛型编程，数据和操作较为分离（如Container和Algorithm中，Algorithm大部分函数只会泛化地编程自己的操作逻辑），因此各种容器均会为基于自身的特性对若干运算符进行重载，以支持其他部件的操作。
+
+```c++
+template <typename T>
+inline
+const T& min(const T& a, const T& b) {
+    return b < a ? b : a;
+}
+```
+
+像上述这段取最小值的代码，如果一些容器要兼容该操作，就必须进行相应的对`<`的重载，决定其最终的执行效果。更多关于运算符重载的内容详见[[C++自学 13] | C++类-5-new、this关键字以及运算符重载](https://past-blog.vercel.app/blog/class-5)。
+
+### template 特化
+
+template 特化指的是**在泛化版本之外对特定传入类型进行单独设计**。示例代码如下：
+
+```c++
+template <typename type>
+struct __type_traits {
+    ...
+};
+template<> struct __type_traits<int> {
+    ...
+};
+template<> struct __type_trait<double> {
+    ...
+};
+```
+
+* 上述代码中，只有当传入参数是`int`或`double`时，才会分别使用下面两处定义
+* 在 STL 的源代码中，`__STL_TEMPLATE_NULL`一般被定义为`template<>`，即表示对模板进行**完全特化**
+
+如果泛化模板有多个模板参数，也可以绑定其中的一些参数进行**部分特化**（Partial Specialization）；此外，也可以针对传入参数的类型范围进行部分特化，示例代码如下：
+
+```c++
+template <typename Iterator>
+struct iterator_traits {
+    ...
+};
+template <typename T>
+struct iterator_traits<T*> {
+    ...
+};
+template <typename T>
+struct iterator_traits<const T*> {
+    ...
+};
+```
+
+* 上述代码中，只有当传入参数为指针或常量指针时，才会分别使用下面两处定义
+
+### 前闭后开区间
 
 C++标准库中用于容器的 Iterator 都遵循前闭后开原则，**即`.begin()`指向容器第一个元素的开始，而`.end()`则指向容器最后元素的下一个位置的开始**。那么可以用[`.begin()`, `.end()`)来包括容器的所有元素，注意**容器内元素排列不一定是连续空间**。使用 Iterator 的一个遍历写法如下：
 
