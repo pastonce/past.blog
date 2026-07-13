@@ -1,0 +1,13 @@
+{
+  "title": "[STL 2] | Container-1-实现关系与分类、双向链表List",
+  "tags": [
+    "C++",
+    "STL",
+    "学习"
+  ],
+  "date": "2026-07-13T21:28",
+  "summary": "介绍STL中容器的分类，并深入地学习GCC2.9和4.9中对于双向链表List的代码实现细节与区别",
+  "cover": "/blogs/container-list/38893d671e7adc6b.png",
+  "hidden": false,
+  "category": "C++自学"
+}
