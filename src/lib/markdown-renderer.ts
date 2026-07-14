@@ -56,11 +56,14 @@ async function loadKatex() {
 	}
 }
 
+let markedConfigured = false
+
 export async function renderMarkdown(markdown: string): Promise<MarkdownRenderResult> {
 	// Load optional renderers first so they apply on the FIRST lex/parse pass.
 	// (If we lex before registering extensions, math tokens won't ever be produced on a cold refresh.)
 	const codeBlockMap = new Map<string, { html: string; original: string }>()
 	const [shiki, katex] = await Promise.all([loadShiki(), loadKatex()])
+	console.log(markdown)
 
 	// Render HTML with heading ids
 	const renderer = new marked.Renderer()
@@ -123,61 +126,64 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 	}
 
 	// Register extensions BEFORE lexing so math gets tokenized on cold refresh.
-	marked.use({
-		renderer,
-		extensions: [
-			// Block math: $$ ... $$
-			{
-				name: 'mathBlock',
-				level: 'block',
-				start(src: string) {
-					return src.indexOf('$$')
+	if (!markedConfigured) {
+		marked.use({
+			renderer,
+			extensions: [
+				// Block math: $$ ... $$
+				{
+					name: 'mathBlock',
+					level: 'block',
+					start(src: string) {
+						return src.indexOf('$$')
+					},
+					tokenizer(src: string) {
+						const match = src.match(/^\$\$([\s\S]+?)\$\$(?:\n+|$)/)
+						if (!match) return
+						return {
+							type: 'mathBlock',
+							raw: match[0],
+							text: match[1].trim()
+						} as any
+					},
+					renderer(token: any) {
+						return `${renderMath(token.text || '', true)}\n`
+					}
 				},
-				tokenizer(src: string) {
-					const match = src.match(/^\$\$([\s\S]+?)\$\$(?:\n+|$)/)
-					if (!match) return
-					return {
-						type: 'mathBlock',
-						raw: match[0],
-						text: match[1].trim()
-					} as any
-				},
-				renderer(token: any) {
-					return `${renderMath(token.text || '', true)}\n`
+				// Inline math: $ ... $
+				{
+					name: 'mathInline',
+					level: 'inline',
+					start(src: string) {
+						const idx = src.indexOf('$')
+						return idx === -1 ? undefined : idx
+					},
+					tokenizer(src: string) {
+						// Avoid $$ (block) and escaped dollars
+						if (src.startsWith('$$')) return
+						if (src.startsWith('\\$')) return
+
+						const match = src.match(/^\$([^\n$]+?)\$/)
+						if (!match) return
+
+						const inner = match[1]
+						// Heuristic: require some non-space content
+						if (!inner || !inner.trim()) return
+
+						return {
+							type: 'mathInline',
+							raw: match[0],
+							text: inner.trim()
+						} as any
+					},
+					renderer(token: any) {
+						return renderMath(token.text || '', false)
+					}
 				}
-			},
-			// Inline math: $ ... $
-			{
-				name: 'mathInline',
-				level: 'inline',
-				start(src: string) {
-					const idx = src.indexOf('$')
-					return idx === -1 ? undefined : idx
-				},
-				tokenizer(src: string) {
-					// Avoid $$ (block) and escaped dollars
-					if (src.startsWith('$$')) return
-					if (src.startsWith('\\$')) return
-
-					const match = src.match(/^\$([^\n$]+?)\$/)
-					if (!match) return
-
-					const inner = match[1]
-					// Heuristic: require some non-space content
-					if (!inner || !inner.trim()) return
-
-					return {
-						type: 'mathInline',
-						raw: match[0],
-						text: inner.trim()
-					} as any
-				},
-				renderer(token: any) {
-					return renderMath(token.text || '', false)
-				}
-			}
-		]
-	})
+			]
+		})
+		markedConfigured = true
+	}
 
 	// Pre-process with marked lexer first (after extensions are registered)
 	const tokens = marked.lexer(markdown)
