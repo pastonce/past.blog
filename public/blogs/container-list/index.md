@@ -27,7 +27,21 @@ struct __list_node {
 };
 ```
 
-* `iterator`类：包含若干`typedef`以及若干可以应用在指针类型上的操作符重载，如：
+* `iterator`类：包含五个`typedef`，具体含义详见[[STL 3] | Iterator-1-相关类型及Iterator Traits](https://past-blog.vercel.app/blog/Iterator-traits)
+
+```c++
+template <typename T, typename Ref, typename Ptr>
+struct __list_iterator {
+    typedef bidirectional_iterator_tag iterator_tag iterator_category;
+    typedef T value_type;
+    typedef Ptr pointer;
+typedef Ref reference;
+    typename ptrdiff_t difference_type;
+...
+};
+```
+
+* 以及若干可以应用在指针类型上的操作符重载，如：
 
     * 前置++的重载，注意此处返回**引用类型**，即左值
 
@@ -38,7 +52,7 @@ struct __list_node {
         }
         ```
 
-    * 后置++的重载，注意此处**返回值类型**，即右值
+    * 后置++的重载，注意此处返回**值类型**，即右值
 
         ```c++
         self operator++(int) {
