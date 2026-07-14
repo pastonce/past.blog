@@ -56,6 +56,16 @@ async function loadKatex() {
 	}
 }
 
+function normalizeMarkdown(markdown: string) {
+	// 解决形如" 但**`Iterator`** "的粗体解析问题，正则匹配并插空格
+    markdown = markdown.replace(
+        /(\S)\*\*(`[^`]+`(?:[^*`]|`[^`]+`)*?)\*\*/g,
+        '$1 **$2**'
+    )
+
+	return markdown
+}
+
 let markedConfigured = false
 
 export async function renderMarkdown(markdown: string): Promise<MarkdownRenderResult> {
@@ -63,7 +73,8 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 	// (If we lex before registering extensions, math tokens won't ever be produced on a cold refresh.)
 	const codeBlockMap = new Map<string, { html: string; original: string }>()
 	const [shiki, katex] = await Promise.all([loadShiki(), loadKatex()])
-	console.log(markdown)
+
+	markdown = normalizeMarkdown(markdown)
 
 	// Render HTML with heading ids
 	const renderer = new marked.Renderer()
