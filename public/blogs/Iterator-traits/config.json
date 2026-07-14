@@ -1,0 +1,13 @@
+{
+  "title": "[STL 3] | Iterator-1-相关类型及Iterator Traits",
+  "tags": [
+    "C++",
+    "STL",
+    "学习"
+  ],
+  "date": "2026-07-14T11:44",
+  "summary": "了解Iterator的部分设计原则以及Iterator Traits如何在Iterator和其他部件之间发挥作用",
+  "cover": "/blogs/Iterator-traits/38893d671e7adc6b.png",
+  "hidden": false,
+  "category": "C++自学"
+}
