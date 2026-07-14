@@ -66,8 +66,6 @@ function normalizeMarkdown(markdown: string) {
 	return markdown
 }
 
-let markedConfigured = false
-
 export async function renderMarkdown(markdown: string): Promise<MarkdownRenderResult> {
 	// Load optional renderers first so they apply on the FIRST lex/parse pass.
 	// (If we lex before registering extensions, math tokens won't ever be produced on a cold refresh.)
@@ -137,64 +135,61 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 	}
 
 	// Register extensions BEFORE lexing so math gets tokenized on cold refresh.
-	if (!markedConfigured) {
-		marked.use({
-			renderer,
-			extensions: [
-				// Block math: $$ ... $$
-				{
-					name: 'mathBlock',
-					level: 'block',
-					start(src: string) {
-						return src.indexOf('$$')
-					},
-					tokenizer(src: string) {
-						const match = src.match(/^\$\$([\s\S]+?)\$\$(?:\n+|$)/)
-						if (!match) return
-						return {
-							type: 'mathBlock',
-							raw: match[0],
-							text: match[1].trim()
-						} as any
-					},
-					renderer(token: any) {
-						return `${renderMath(token.text || '', true)}\n`
-					}
+	marked.use({
+		renderer,
+		extensions: [
+			// Block math: $$ ... $$
+			{
+				name: 'mathBlock',
+				level: 'block',
+				start(src: string) {
+					return src.indexOf('$$')
 				},
-				// Inline math: $ ... $
-				{
-					name: 'mathInline',
-					level: 'inline',
-					start(src: string) {
-						const idx = src.indexOf('$')
-						return idx === -1 ? undefined : idx
-					},
-					tokenizer(src: string) {
-						// Avoid $$ (block) and escaped dollars
-						if (src.startsWith('$$')) return
-						if (src.startsWith('\\$')) return
-
-						const match = src.match(/^\$([^\n$]+?)\$/)
-						if (!match) return
-
-						const inner = match[1]
-						// Heuristic: require some non-space content
-						if (!inner || !inner.trim()) return
-
-						return {
-							type: 'mathInline',
-							raw: match[0],
-							text: inner.trim()
-						} as any
-					},
-					renderer(token: any) {
-						return renderMath(token.text || '', false)
-					}
+				tokenizer(src: string) {
+					const match = src.match(/^\$\$([\s\S]+?)\$\$(?:\n+|$)/)
+					if (!match) return
+					return {
+						type: 'mathBlock',
+						raw: match[0],
+						text: match[1].trim()
+					} as any
+				},
+				renderer(token: any) {
+					return `${renderMath(token.text || '', true)}\n`
 				}
-			]
-		})
-		markedConfigured = true
-	}
+			},
+			// Inline math: $ ... $
+			{
+				name: 'mathInline',
+				level: 'inline',
+				start(src: string) {
+					const idx = src.indexOf('$')
+					return idx === -1 ? undefined : idx
+				},
+				tokenizer(src: string) {
+					// Avoid $$ (block) and escaped dollars
+					if (src.startsWith('$$')) return
+					if (src.startsWith('\\$')) return
+
+					const match = src.match(/^\$([^\n$]+?)\$/)
+					if (!match) return
+
+					const inner = match[1]
+					// Heuristic: require some non-space content
+					if (!inner || !inner.trim()) return
+
+					return {
+						type: 'mathInline',
+						raw: match[0],
+						text: inner.trim()
+					} as any
+				},
+				renderer(token: any) {
+					return renderMath(token.text || '', false)
+				}
+			}
+		]
+	})
 
 	// Pre-process with marked lexer first (after extensions are registered)
 	const tokens = marked.lexer(markdown)
@@ -217,33 +212,48 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 	}
 	extractHeadings(tokens)
 
-	// Pre-process code blocks with Shiki
-	for (const token of tokens) {
-		if (token.type === 'code') {
-			const codeToken = token as Tokens.Code
-			const originalCode = codeToken.text
-			const key = `__SHIKI_CODE_${codeBlockMap.size}__`
+	// Pre-process code blocks with Shiki（递归检查）
+	async function processCodeBlocks(tokenList: any[]) {
+		for (const token of tokenList) {
+			if (token.type === 'code') {
+				const originalCode = token.text;
+				const key = `__SHIKI_CODE_${codeBlockMap.size}__`;
 
-			if (shiki) {
-				try {
-					const html = await shiki.codeToHtml(originalCode, {
-						lang: codeToken.lang || 'text',
-						theme: 'one-light'
-					})
-					codeBlockMap.set(key, { html, original: originalCode })
-					codeToken.text = key
-				} catch {
-					// Keep original if highlighting fails
+				if (shiki) {
+					try {
+						const html = await shiki.codeToHtml(originalCode, {
+							lang: token.lang || 'text',
+							theme: 'one-light'
+						})
+						codeBlockMap.set(key, { html, original: originalCode })
+						token.text = key
+					} catch {
+						// Keep original if highlighting fails
+						codeBlockMap.set(key, { html: '', original: originalCode })
+						token.text = key
+					}
+				} else {
+					// Fallback when shiki is not available
 					codeBlockMap.set(key, { html: '', original: originalCode })
-					codeToken.text = key
+					token.text = key
 				}
-			} else {
-				// Fallback when shiki is not available
-				codeBlockMap.set(key, { html: '', original: originalCode })
-				codeToken.text = key
+			}
+
+			// 递归
+			if ('tokens' in token && token.tokens) {
+				await processCodeBlocks(token.tokens);
+			}
+
+			// list 专用
+			if ('items' in token && token.items) {
+				for (const item of token.items) {
+					await processCodeBlocks(item.tokens);
+				}
 			}
 		}
 	}
+	await processCodeBlocks(tokens);
+
 	const html = (marked.parser(tokens) as string) || ''
 
 	return { html, toc }
