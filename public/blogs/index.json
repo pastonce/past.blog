@@ -1,5 +1,19 @@
 [
   {
+    "slug": "Container-vector",
+    "title": "[STL 4] | Container-2-动态数组Vector",
+    "tags": [
+      "C++",
+      "STL",
+      "学习"
+    ],
+    "date": "2026-07-16T15:14",
+    "summary": "了解STL中Vector容器的实现和成长特性",
+    "cover": "/blogs/Container-vector/38893d671e7adc6b.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "Iterator-traits",
     "title": "[STL 3] | Iterator-1-相关类型及Iterator Traits",
     "tags": [
