@@ -1,5 +1,19 @@
 [
   {
+    "slug": "Container-array-forwardlist",
+    "title": "[STL 5] | Container-3-静态数组Array及单向链表Forward-List",
+    "tags": [
+      "C++",
+      "STL",
+      "学习"
+    ],
+    "date": "2026-07-17T18:03",
+    "summary": "简单学习STL中Array和Forward-List的底层实现与特性",
+    "cover": "/blogs/Container-array-forwardlist/38893d671e7adc6b.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "Container-vector",
     "title": "[STL 4] | Container-2-动态数组Vector",
     "tags": [
