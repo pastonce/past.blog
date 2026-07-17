@@ -17,6 +17,8 @@
 
 但**`Iterator`是泛化的指针，指针是退化的`Iterator`**，其他部件并不能区分两者，而且朴素指针不以类的形式定义，无法提供上述五种相关类型，`Iterator Traits`即为解决该问题的中间层
 
+![](/blogs/Iterator-traits/97e75f0692e188fa.png)
+
 ```c++
 template <typename I>
 struct iterator_traits {
