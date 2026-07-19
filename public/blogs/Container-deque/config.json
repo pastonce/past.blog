@@ -1,0 +1,13 @@
+{
+  "title": "[STL 6] | Container-双向队列Deque ",
+  "tags": [
+    "C++",
+    "STL",
+    "学习"
+  ],
+  "date": "2026-07-19T18:22",
+  "summary": "了解双向队列Deque的基础实现，并深度挖掘Deque的伪连续存储机制",
+  "cover": "/blogs/Container-deque/38893d671e7adc6b.png",
+  "hidden": false,
+  "category": "C++自学"
+}
