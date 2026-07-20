@@ -1,0 +1,13 @@
+{
+  "title": "[STL 7] | Adapter-1-队列Queue及栈Stack",
+  "tags": [
+    "C++",
+    "STL",
+    "学习"
+  ],
+  "date": "2026-07-20T16:51",
+  "summary": "了解通过适配Deque容器实现的队列Queue与栈Stack",
+  "cover": "/blogs/Adapter-queue-stack/38893d671e7adc6b.png",
+  "hidden": false,
+  "category": "C++自学"
+}
