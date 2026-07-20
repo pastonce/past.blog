@@ -57,11 +57,18 @@ async function loadKatex() {
 }
 
 function normalizeMarkdown(markdown: string) {
-	// 解决形如" 但**`Iterator`** "的粗体解析问题，正则匹配并插空格
-    markdown = markdown.replace(
-        /(\S)\*\*(`[^`]+`(?:[^*`]|`[^`]+`)*?)\*\*/g,
-        '$1 **$2**'
-    )
+	// 解决形如" 但**`Iterator`** "和" **`Iterator`**但 "的粗体解析问题，正则匹配并插空格
+	// 前缀模式
+	markdown = markdown.replace(
+		/([\p{L}\p{N}])\*\*(`[^`]+`(?:[^*`]|`[^`]+`)*?)\*\*/gu,
+		'$1 **$2**'
+	)
+
+	// 后缀模式
+	markdown = markdown.replace(
+		/\*\*((?:[^*`]|`[^`]+`)*?`[^`]+`)\*\*([\p{L}\p{N}])/gu,
+		'**$1** $2'
+	)
 
 	return markdown
 }
