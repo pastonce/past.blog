@@ -194,3 +194,84 @@
 		animation: heartbeat-frame 0.8s ease-in-out;
 	}
 }
+/* 鼠标样式控制 */
+html,
+body {
+    cursor: url("/cursor/STMC_GenshinNahida_01_Normal.cur"), auto;
+}
+
+a,
+button,
+[role="button"] {
+    cursor: url("/cursor/STMC_GenshinNahida_15_Finger(large).cur"), pointer;
+}
+
+input,
+textarea,
+[contenteditable="true"] {
+    cursor: url("/cursor/STMC_GenshinNahida_06_Beam(reversed).cur"), text;
+}
+
+.disabled,
+button:disabled {
+    cursor: url("/cursor/STMC_GenshinNahida_08_Unavailable.cur"), not-allowed;
+}
+
+.canvas,
+.crosshair {
+    cursor: url("/cursor/STMC_GenshinNahida_05_Cross(alternative).cur"), crosshair;
+}
+
+.resize-horizontal {
+    cursor: url("/cursor/STMC_GenshinNahida_10_EW.cur"), ew-resize;
+}
+.resize-vertical {
+    cursor: url("/cursor/STMC_GenshinNahida_09_NS.cur"), ns-resize;
+}
+.draggable {
+    cursor: url("/cursor/STMC_GenshinNahida_05_Cross(alternative).cur"), move;
+}
+
+.cursor-default {
+	cursor: url("/cursor/STMC_GenshinNahida_01_Normal.cur"), default !important;
+}
+
+.cursor-pointer {
+	cursor: url("/cursor/STMC_GenshinNahida_15_Finger(large).cur"), pointer !important;
+}
+
+.cursor-text {
+	cursor: url("/cursor/STMC_GenshinNahida_06_Beam(reversed).cur"), text !important;
+}
+
+.cursor-help {
+	cursor: url("/cursor/STMC_GenshinNahida_02_Help.cur"), help !important;
+}
+
+.cursor-not-allowed {
+	cursor: url("/cursor/STMC_GenshinNahida_08_Unavailable.cur"), not-allowed !important;
+}
+
+.cursor-crosshair {
+	cursor: url("/cursor/STMC_GenshinNahida_05_Cross(alternative).cur"), crosshair !important;
+}
+
+.cursor-move {
+	cursor: url("/cursor/STMC_GenshinNahida_05_Cross(alternative).cur"), move !important;
+}
+
+.cursor-ew-resize {
+	cursor: url("/cursor/STMC_GenshinNahida_10_EW.cur"), ew-resize !important;
+}
+
+.cursor-ns-resize {
+	cursor: url("/cursor/STMC_GenshinNahida_09_NS.cur"), ns-resize !important;
+}
+
+.cursor-nwse-resize {
+	cursor: url("/cursor/STMC_GenshinNahida_11_NWSE.cur"), nwse-resize !important;
+}
+
+.cursor-nesw-resize {
+	cursor: url("/cursor/STMC_GenshinNahida_12_NESW.cur"), nesw-resize !important;
+}
