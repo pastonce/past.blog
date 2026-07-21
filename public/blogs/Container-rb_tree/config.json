@@ -1,0 +1,13 @@
+{
+  "title": "[STL 8] | Container-5-红黑树Rb_tree",
+  "tags": [
+    "C++",
+    "STL",
+    "学习"
+  ],
+  "date": "2026-07-21T22:16",
+  "summary": "了解红黑树Rb_tree遵循的元素排列规则以及底层实现",
+  "cover": "/blogs/Container-rb_tree/38893d671e7adc6b.png",
+  "hidden": false,
+  "category": "C++自学"
+}
