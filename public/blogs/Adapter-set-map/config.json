@@ -1,0 +1,13 @@
+{
+  "title": "[STL 9] | Adapter-2-集合Set/Multiset及映射Map/Multimap",
+  "tags": [
+    "C++",
+    "STL",
+    "学习"
+  ],
+  "date": "2026-07-23T22:53",
+  "summary": "了解基于红黑树Rb_tree容器适配出的集合Set/Multiset以及映射Map/Multimap的底层实现",
+  "cover": "/blogs/Adapter-set-map/38893d671e7adc6b.png",
+  "hidden": false,
+  "category": "C++自学"
+}
