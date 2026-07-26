@@ -27,7 +27,7 @@ public:
 
 * `Set`的元素不可重复，因此插入操作使用的是`Rb_tree`的`insert_unique`，而`Multiset`允许元素重复，使用的是`insert_equal`
 
-* Set`的一个定义示例：
+* `Set`的一个定义示例：
 
     ```c++
     set<int> mySet;
