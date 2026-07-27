@@ -1,5 +1,19 @@
 [
   {
+    "slug": "Adapter-unordered-set-map",
+    "title": "[STL 11] | Adapter-3-无序集合Unordered_set/multiset及无序映射Unordered_map/multimap",
+    "tags": [
+      "C++",
+      "STL",
+      "学习"
+    ],
+    "date": "2026-07-27T18:04",
+    "summary": "了解基于哈希表Hashtable容器适配出的无序集合Unordered_set/multiset以及无序映射Unordered_map/multimap的底层实现",
+    "cover": "/blogs/Adapter-unordered-set-map/38893d671e7adc6b.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "Container-hashtable",
     "title": "[STL 10] | Container-6-哈希表Hashtable",
     "tags": [
