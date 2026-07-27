@@ -1,6 +1,7 @@
 > * 本系列主要基于侯捷老师的教学视频进行学习，部分细节会参考[菜鸟教程](https://www.runoob.com/cplusplus/cpp-stl-tutorial.html)
 >
 > [![](/blogs/Standard-Template-Library/2ff487c0323940c1.png)](https://www.bilibili.com/video/BV1Ui3ue8Edn)
+> * [GCC2.9 标准库源码](https://github.com/xiebaoma/gcc-2.9-stl)
 
 ## 什么是C++ STL？
 
