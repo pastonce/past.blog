@@ -1,0 +1,13 @@
+{
+  "title": "[STL 12] | Iterator-2-分类及其对Algorithm的意义",
+  "tags": [
+    "C++",
+    "STL",
+    "学习"
+  ],
+  "date": "2026-07-28T23:20",
+  "summary": "详细介绍Iterator的五种类别及继承关系，并以distance和advance两个算法为例展示分类对算法的意义",
+  "cover": "/blogs/Iterator-category/38893d671e7adc6b.png",
+  "hidden": false,
+  "category": "C++自学"
+}
