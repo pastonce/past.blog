@@ -1,5 +1,19 @@
 [
   {
+    "slug": "Adapter-three-categories",
+    "title": "[STL 15] | Adapter-4-三类适配器及若干示例",
+    "tags": [
+      "C++",
+      "STL",
+      "学习"
+    ],
+    "date": "2026-08-04T00:31",
+    "summary": "",
+    "cover": "/blogs/Adapter-three-categories/38893d671e7adc6b.png",
+    "hidden": false,
+    "category": "C++自学"
+  },
+  {
     "slug": "Functor-basic-adaptive",
     "title": "[STL 14] | Functor-基本结构及可适配性",
     "tags": [
