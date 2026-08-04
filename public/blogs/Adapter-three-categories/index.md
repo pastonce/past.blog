@@ -199,10 +199,169 @@ public:
 
 ### inserter
 
+`inserter`可以**将迭代器适配后支持元素的插入操作而不是直接赋值**，实际上是对`=`运算符进行了重载
 
+```c++
+int myints[] = {10, 20, 30, 40, 50, 60, 70};
+vector<int> myvec(7);
+copy(myints, myints + 7, myvec.begin());
+// ------------------------------------------------------
+template<typename InputIterator, typename OutputIterator>
+OutputIterator copy(InputIterator first, InputIterator last, OutputIterator result) {
+    while(first != last) {
+        *result = *first;
+        ++result;
+        ++first;
+    }
+    return result;
+}
+```
+
+* 从`line 8`可以看到，不使用`inserter`的`copy`操作仅仅只是依次赋值，并**不会开辟出新的空间**
+
+```c++
+list<int> foo, bar;
+for (int i = 1; i <= 5; i++) {
+    foo.push_back(i);
+    bar.push_back(i * 10);
+}
+list<int>::iterator it = foo.begin();
+advance(it, 3);
+copy(bar.begin(), bar.end(), inserter(foo, it));
+// ----------------------------------------------------
+template <class Container, class Iterator>
+inline insert_iterator<Container> inserter(Container& x, Iterator i) {
+    typedef typename Container::iterator iter;
+    return insert_iterator<Container>(x, iter(i));
+}
+template <typename Container>
+class insert_iterator {
+protected:
+    Container* container; // 容器指针
+    typename Container::iterator iter; // 容器迭代器
+public:
+    typedef output_iterator_tag iterator_category;
+    typedef void                value_type;
+    typedef void                difference_type;
+    typedef void                pointer;
+    typedef void                reference;
+
+    insert_iterator(Container& x, typename Container::iterator i) 
+    : container(&x), iter(i) {}
+    insert_iterator<Container>& operator=(const typename Container::value_type& value) { 
+        iter = container->insert(iter, value); // 实现插入功能
+        ++iter;
+        return *this;
+    }
+    insert_iterator<Container>& operator*() { return *this; }
+    insert_iterator<Container>& operator++() { return *this; }
+    insert_iterator<Container>& operator++(int) { return *this; }
+};
+```
+
+* `line 16-20`定义了`inserter`自己的五个相关类型，其中**`iterator_category`为`output_iterator_tag`**
+* 不改变原有`copy`的代码，`inserter`通过适配迭代器实现了`line 24-28`，即将原本的赋值操作通过重载`=`运算符改变为**调用相应容器的插入操作**
+* 由于`line 31`已经进行了移动，所以`line 35-36`均返回当前对象本身
+
+![](/blogs/Adapter-three-categories/1d403f4814fcf41f.png)
+
+## X Adapter
 
 ### ostream_iterator
 
+`ostream_iterator`实际上是修饰`ostream`的一种适配器，**可以将适配后的`ostream`的赋值功能改写为输出指定内容和分隔符**
 
+```c++
+template <class T>
+class ostream_iterator {
+protected:
+    ostream* stream; // 输出流指针
+    const char* string; // 分隔符
+public:
+    typedef output_iterator_tag iterator_category;
+    typedef void                value_type;
+    typedef void                difference_type;
+    typedef void                pointer;
+    typedef void                reference;
+
+    ostream_iterator(ostream& s) : stream(&s), string(0) {}
+    ostream_iterator(ostream& s, const char* c) : stream(&s), string(c)  {}
+    ostream_iterator<T>& operator=(const T& value) { 
+        *stream << value;
+        if (string) *stream << string;
+        return *this;
+    }
+    ostream_iterator<T>& operator*() { return *this; }
+    ostream_iterator<T>& operator++() { return *this; } 
+    ostream_iterator<T>& operator++(int) { return *this; } 
+};
+```
+
+* `line 16-20`定义了`ostream_iterator`自己的五个相关类型，其中**`iterator_category`为`output_iterator_tag`**
+
+* `line 20-22`均返回对象本身，加上`line 15-19`对`=`运算符的重载，使得可以通过`copy`操作将指定迭代器之间的内容输出到屏幕上：
+
+    ```c++
+    int main() {
+        std::vector<int> myvector;
+        for (int i = 1; i < 10; i++)
+            myvector.push_back(i * 10);
+    
+        std::ostream_iterator<int> out_it(std::cout, ", ");
+        // 10, 20, 30, 40, 50, 60, 70, 80, 90
+        std::copy(myvector.begin(), myvector.end(), out_it);
+        return 0;
+    }
+    ```
 
 ### istream_iterator
+
+`istream_iterator`实际上是修饰`istream`的一种适配器，**可以将适配后的`istream`的自增功能改写为一次读取，将解引用功能改写为返回读到的值**
+
+```c++
+template <class T, class Distance = ptrdiff_t> 
+class istream_iterator {
+protected:
+    istream* stream; // 输入流指针
+    T value; // 读到的值
+    bool end_marker;
+    void read() {
+        end_marker = (*stream) ? true : false;
+        if (end_marker) *stream >> value;
+        end_marker = (*stream) ? true : false;
+    }
+public:
+    typedef input_iterator_tag iterator_category;
+    typedef T                  value_type;
+    typedef Distance           difference_type;
+    typedef const T*           pointer;
+    typedef const T&           reference;
+
+    istream_iterator() : stream(&cin), end_marker(false) {} // 结束标志
+    istream_iterator(istream& s) : stream(&s) { read(); }
+    reference operator*() const { return value; }
+    pointer operator->() const { return &(operator*()); }
+    istream_iterator<T, Distance>& operator++() { // 前置++
+        read(); 
+        return *this;
+    }
+    istream_iterator<T, Distance> operator++(int) { // 后置++
+        istream_iterator<T, Distance> tmp = *this;
+        read();
+        return tmp;
+    }
+};
+```
+
+* `line 13-27`定义了`istream_iterator`自己的五个相关类型，其中**`iterator_category`为`input_iterator_tag`**
+
+* `line 20`的构造函数表示`istream_iterator`一经此种方式构造就会开始读取输入，`line 21`将`*`运算符重载为返回读到的值，`line 22`将`->`运算符重载为返回读到值的地址
+
+* `line 23-31`将`++`运算符都重载为进行一次读取操作
+
+* 以上特性结合`copy`函数可以实现将输入读取到指定容器的效果：
+
+    ```c++
+    istream_iterator<int> iit(std::cin), eos; // 此时已开始第一次读取
+    copy(iit, eos, inserter(c, c.begin()));
+    ```

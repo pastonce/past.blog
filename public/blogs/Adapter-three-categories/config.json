@@ -6,7 +6,7 @@
     "学习"
   ],
   "date": "2026-08-04T00:31",
-  "summary": "",
+  "summary": "系统性地介绍 STL 中的三类适配器，并通过分析代表性示例的代码实现学习其功能",
   "cover": "/blogs/Adapter-three-categories/38893d671e7adc6b.png",
   "hidden": false,
   "category": "C++自学"
