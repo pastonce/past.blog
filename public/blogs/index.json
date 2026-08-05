@@ -64,7 +64,7 @@
       "学习"
     ],
     "date": "2026-07-27T18:04",
-    "summary": "了解基于哈希表Hashtable容器适配出的无序集合Unordered_set/multiset以及无序映射Unordered_map/multimap的底层实现",
+    "summary": "了解基于哈希表Hashtable容器适配出的无序集合Unordered_set/multiset以及无序映射Unordered_map/multimap的底层实现，深入介绍一种万用的哈希函数以及自定义方法",
     "cover": "/blogs/Adapter-unordered-set-map/38893d671e7adc6b.png",
     "hidden": false,
     "category": "C++自学"

@@ -110,3 +110,88 @@ public:
 * `line 16-20`的相关类型以及`iterator`不再使用`Hashtable`的常量类型，因为**键值对中的值应当可以被修改**；但元素的键仍不能被直接修改，所以`line 5`传入的`pair`中使用了**`const Key`**
 * `Hash_map`的元素不可重复，因此调用哈希表中的`insert_unique`插入元素；而`Hash_multimap`允许重复，则调用哈希表中的`insert_equal`插入元素
 * 与`Hash_set`不同的是，`Hash_map`还对`[]`操作符进行了重载，使其**能够在键对应的元素不存在时执行插入操作**，但`Multimap`不支持
+
+## 自定义HashFcn
+
+### 一个万用的哈希函数
+
+`TR1`版本提供了一个万用的哈希函数，主要思想是**将复杂数据拆解为若干简单类型的基本数据后逐一哈希处理，并将得到的 Hash Code 以一定规则组合起来**，其实现如下：
+
+```c++
+template <typename... Types>
+inline size_t hash_val(const Types&... args) { // 重载版本1
+    size_t seed = 0;
+    hash_val(seed, args...);
+    return seed;
+}
+template <typename T, typename... Types>
+inline void hash_val(size_t seed, const T& val, const Types&... args) { // 重载版本2
+    hash_combine(seed, val);
+    hash_val(seed, args...);
+}
+template <typename T>
+inline void hash_val(size_t& seed, const T& val) { // 重载版本3
+    hash_combine(seed, val);
+}
+template <typename T>
+inline void hash_combine(size_t& seed, const T& val) {
+    seed ^= std::hash<T>()(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+```
+
+* 该哈希函数的入口是重载版本1，因为它可以接受任意数量的参数（如类中各个基本类型的数据成员）；然后在`line 4`程序转到重载版本2，将原有的`N`个参数划分为`1 + (N - 1)`
+* `line 9`对划分出的基本数据`val`进行哈希操作并组合在原有`seed`上，`line 10`继续调用重载版本2进行下次划分，以此类推
+* 直到仅剩一个基本数据时，调用重载版本3，最终在`line 5`处将最终的 Hash Code 返回
+* `line 18`比起简单相加得到 Hash Code 的效果更好：
+    * **异或操作对每一位都会有影响，混合能力强**，且不会有溢出问题
+    * **`0x9e3779b9`**在十进制时为$2654435769 = \frac{\sqrt{5}-1}{2}\times2^{32}$，在散列中有较好分布性质，**有利于避免规律性冲突**
+    * 位移操作则是为了制造`seed`自身的位扰动
+
+### 自定义哈希函数的方法
+
+```c++
+struct Customer { // 自定义数据示例
+    std::string firstName;
+    std::string lastName;
+    long number;
+};
+```
+
+GCC4.9 提供包括`string`在内的所有基本类型的哈希函数，如果想要对自定义的数据使用哈希函数，有以下三种方法：
+
+* 函数：
+
+    ```c++
+    size_t customer_hash_func(const Customer& c) {
+        return hash_val(c.firstName, c.lastName, c.number);
+    }
+    unordered_set<Customer, size_t(*)(const Customer&)> custset(20, customer_hash_func);
+    ```
+
+    其中`size_t(*)(const Customer&)`为对应函数的类型
+
+* 仿函数：
+
+    ```c++
+    class CustomerHash {
+    public:
+        std::size_t operator()(const Customer& c) const {
+            return hash_val(c.firstName, c.lastName, c.number);
+        }
+    };
+    unordered_set<Customer, CustomerHash> custset;
+    ```
+
+* `std::hash`的偏特化版本：（详见[[STL 10] | Container-6-哈希表Hashtable](https://past-blog.vercel.app/blog/Container-hashtable)）
+
+    ```c++
+    namespace std {
+    template<> struct hash<Customer> {
+        size_t operator()(const Customer& c) const {
+            return hash_val(c.firstName, c.lastName, c.number);
+        }
+    };
+    }
+    ```
+
+    因为在 GCC4.9 中`unordered_(multi)set/(multi)map`的模板参数默认调用`std::hash`作为哈希函数
