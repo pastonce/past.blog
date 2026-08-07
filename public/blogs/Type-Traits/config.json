@@ -1,0 +1,13 @@
+{
+  "title": "[STL 16] | 类型特征Type Traits的使用及实现方式",
+  "tags": [
+    "C++",
+    "STL",
+    "学习"
+  ],
+  "date": "2026-08-07T19:53",
+  "summary": "学习如何通过 Type Traits 获取类型的重要特征，并以两个示例展示其底层实现方式",
+  "cover": "/blogs/Type-Traits/38893d671e7adc6b.png",
+  "hidden": false,
+  "category": "C++自学"
+}
