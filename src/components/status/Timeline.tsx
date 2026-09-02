@@ -60,7 +60,7 @@ export default function Timeline({ segments, summary, currentAppByDevice }: Prop
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 lg:flex-1 lg:min-h-0 lg:flex lg:flex-col">
       {Array.from(byDevice.entries()).map(([deviceId, { name, segs }]) => {
         // Single-pass aggregation: collect last-seen time + status text per app
         const appMap = new Map<string, AggregatedApp>();
@@ -108,12 +108,12 @@ export default function Timeline({ segments, summary, currentAppByDevice }: Prop
         });
 
         return (
-          <div key={deviceId}>
+          <div key={deviceId} className="lg:flex-1 lg:min-h-0 lg:flex lg:flex-col">
             <h3 className="text-xs font-semibold mb-2 text-(--status-text-muted) uppercase tracking-wider">
               {name}
             </h3>
 
-            <div className="max-h-100 overflow-y-auto pr-1 timeline-scroll">
+            <div className="max-h-100 lg:max-h-none lg:flex-1 lg:min-h-0 overflow-y-auto pr-1 timeline-scroll">
               <div className="space-y-1">
                 {sorted.map((app) => {
                   const color = getAppColor(app.appName, colorMap);

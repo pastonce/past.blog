@@ -5,13 +5,14 @@ import { useDashboard } from "@/hooks/status/useDashboard";
 // import { useConfig, useConfigLoader, ConfigContext } from "@/hooks/status/useConfig";
 import type { SiteConfig, DeviceState } from "@/lib/status-api";
 import { defaultConfig, fetchHealthData } from "@/lib/status-api";
-import Header from "@/components/status/Header";
+// import Header from "@/components/status/Header";
 import CurrentStatus from "@/components/status/CurrentStatus";
 import DeviceCard from "@/components/status/DeviceCard";
 import DatePicker from "@/components/status/DatePicker";
 import Timeline from "@/components/status/Timeline";
 import HealthData from "@/components/status/HealthData";
 // import SiteMetadataSync from "@/components/status/SiteMetadataSync";
+import { type CurrentResponse, type TimelineResponse } from "@/lib/status-api";
 
 // interface DashboardOption extends DashboardProfile {
 //   isPrimary: boolean;
@@ -26,10 +27,25 @@ import HealthData from "@/components/status/HealthData";
 //   reachable: boolean;
 // }
 
-export default function StatusCard() {
-  const { current, timeline, selectedDate, changeDate, loading, error, viewerCount } = useDashboard();
+interface StatusCardProps {
+  current: CurrentResponse | null;
+  timeline: TimelineResponse | null;
+  selectedDate: string;
+  changeDate: (date: string) => void;
+  loading: boolean;
+  error: string | null;
+}
+
+export default function StatusCard({
+  current,
+  timeline,
+  selectedDate,
+  changeDate,
+  loading,
+  error,
+}: StatusCardProps) {
   const ConfigContext = createContext<SiteConfig>(defaultConfig);
-  const config = useContext(ConfigContext);;
+  const config = useContext(ConfigContext);
   const { displayName } = config;
   // const dashboards = useMemo<DashboardOption[]>(() => {
   //   return [
@@ -211,11 +227,12 @@ export default function StatusCard() {
 
   return (
     <div className="status-card">
-      <Header
+      {/* 迁移到 /status 页面下 */}
+      {/* <Header
         serverTime={current?.server_time}
         viewerCount={viewerCount}
         displayName={displayName}
-      />
+      /> */}
 
       {/* {!isSinglePanel && (
         <DashboardSwitcher
@@ -275,7 +292,7 @@ export default function StatusCard() {
         <>
           <CurrentStatus device={selectedDevice} displayName={displayName} />
 
-          <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 lg:flex-1 lg:min-h-0">
             {/* 单设备时不渲染设备栏——状态气泡已经展示了这台设备的一切，
                 竖屏访问时省出的空间让时间线不用滚动就能看到 */}
             {devices.length !== 1 && (
@@ -306,7 +323,7 @@ export default function StatusCard() {
               </div>
             )}
 
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 lg:min-h-0 lg:flex lg:flex-col">
               <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
                 <DatePicker selectedDate={selectedDate} onChange={changeDate} />
                 {hasHealthData && (
@@ -370,12 +387,12 @@ export default function StatusCard() {
           </div>
         </>
       )}
-
-      <footer className="mt-12 pt-4 separator-dashed text-center">
+      {/* 迁移到 /status 页面下 */}
+      {/* <footer className="mt-12 pt-4 separator-dashed text-center">
         <p className="text-[10px] text-(--status-text-muted)">
           {displayName} Now &middot; 每 10 秒自动刷新 &middot; (◕ᴗ◕)
         </p>
-      </footer>
+      </footer> */}
     </div>
   );
 }

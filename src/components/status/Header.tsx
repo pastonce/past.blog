@@ -29,20 +29,20 @@ export default function Header({ serverTime, viewerCount = 0, displayName: displ
   const greeting = getGreeting();
 
   return (
-    <header className="pb-4 mb-6 separator-dashed">
-      <div className="flex items-end justify-between">
-        {/* Left: title + greeting */}
-        <div>
-          <h1 className="text-xl font-bold text-(--status-text) leading-tight">
-            {displayName} Now
-          </h1>
-          <p className="text-xs text-(--status-text-muted) mt-0.5">
-            <span className="mr-1">{greeting.kaomoji}</span>
-            {greeting.text}
-          </p>
-        </div>
+    <header className="relative -mt-5.5 pt-2 separator-dashed">
+      {/* Center: title + greeting */}
+      <div className="absolute left-1/2 -translate-x-1/2 text-center">
+        <h1 className="text-xl font-bold text-brand leading-tight">
+          {displayName} Now
+        </h1>
+        <p className="text-xs text-(--status-text-muted) mt-0.5">
+          <span className="mr-1">{greeting.kaomoji}</span>
+          {greeting.text}
+        </p>
+      </div>
 
-        {/* Right: viewer count + time */}
+      {/* Right: viewer count + time */}
+      <div className="flex justify-end">
         <div className="text-right flex flex-col items-end gap-0.5">
           {viewerCount > 0 && (
             <p className="text-xs text-brand font-medium">
