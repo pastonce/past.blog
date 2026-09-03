@@ -3,7 +3,7 @@
 	"FileReferences": {
 		"Moc": "火花LIVE2D.moc3",
 		"Textures": [
-			"火花LIVE2D.4096/texture_00.png"
+			"tex2048/texture_00.png"
 		],
 		"Physics": "火花LIVE2D.physics3.json",
 		"DisplayInfo": "火花LIVE2D.cdi3.json"

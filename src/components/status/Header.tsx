@@ -32,10 +32,10 @@ export default function Header({ serverTime, viewerCount = 0, displayName: displ
     <header className="relative -mt-5.5 pt-2 separator-dashed">
       {/* Center: title + greeting */}
       <div className="absolute left-1/2 -translate-x-1/2 text-center">
-        <h1 className="text-xl font-bold text-brand leading-tight">
+        <h1 className="titleNow text-xl font-bold text-brand leading-tight">
           {displayName} Now
         </h1>
-        <p className="text-xs text-(--status-text-muted) mt-0.5">
+        <p className="greeting text-xs text-(--status-text-muted)">
           <span className="mr-1">{greeting.kaomoji}</span>
           {greeting.text}
         </p>
@@ -49,7 +49,7 @@ export default function Header({ serverTime, viewerCount = 0, displayName: displ
               {viewerCount} 人在看喵~
             </p>
           )}
-          <p className="text-sm font-mono font-medium text-brand-secondary">
+          <p className="timeNum text-sm font-mono font-medium text-brand-secondary">
             {timeStr}
           </p>
         </div>

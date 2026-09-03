@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 interface PixiAppInstance {
 	stage: { addChild: (child: unknown) => void }
 	view: HTMLCanvasElement
+	renderer: { resize: (width: number, height: number) => void }
 	destroy: (opts?: { removeView?: boolean }) => void
 }
 
@@ -14,7 +15,11 @@ interface Live2DModelInstance {
 	anchor: { set: (x: number, y: number) => void }
 	x: number
 	y: number
+	width: number
+	height: number
 	scale: { set: (x: number, y: number) => void }
+	/** 模型原始画布尺寸（不受当前缩放影响） */
+	internalModel: { originalWidth: number; originalHeight: number }
 }
 
 const CDN_SCRIPTS = [
@@ -50,6 +55,24 @@ export default function Live2DViewer() {
 		if (!container) return
 
 		let app: PixiAppInstance | null = null
+		let model: Live2DModelInstance | null = null
+
+		/** 按容器尺寸等比缩放模型并居中，保证完整可见（宽/高较小的一侧决定缩放比） */
+		const fitModel = () => {
+			if (!app || !model) return
+			const width = container.clientWidth || 500
+			const height = container.clientHeight || 500
+			app.renderer.resize(width, height)
+			// 用模型的原始尺寸计算缩放比
+			const { originalWidth, originalHeight } = model.internalModel
+			const fit =
+				originalWidth > 0 && originalHeight > 0
+					? Math.min(width / originalWidth, height / originalHeight) * 0.95
+					: 0.18
+			model.scale.set(fit, fit)
+			model.x = width / 2
+			model.y = height / 2
+		}
 
 		const init = async () => {
 			try {
@@ -64,7 +87,7 @@ export default function Live2DViewer() {
 				;(window as unknown as { PIXI: unknown }).PIXI = PIXI
 
 				const PIXIApp = (
-					PIXI as { Application: new (opts: { view: HTMLCanvasElement; width?: number; height?: number; backgroundAlpha?: number }) => PixiAppInstance }
+					PIXI as { Application: new (opts: { view: HTMLCanvasElement; width?: number; height?: number; backgroundAlpha?: number; resolution?: number; autoDensity?: boolean }) => PixiAppInstance }
 				).Application
 
 				const Live2DModel = (PIXI as { live2d?: { Live2DModel: { from: (url: string) => Promise<Live2DModelInstance> } } }).live2d?.Live2DModel
@@ -76,25 +99,29 @@ export default function Live2DViewer() {
 				const width = container.clientWidth || 500
 				const height = container.clientHeight || 500
 				const canvas = document.createElement('canvas')
-				canvas.style.width = '100%'
-				canvas.style.height = '100%'
 				canvas.style.display = 'block'
+				// 模型纯展示、无交互需求：触摸/点击全部穿透，避免拦截手机端页面滚动
+				// canvas.style.pointerEvents = 'none'
 				container.appendChild(canvas)
 
 				app = new PIXIApp({
 					view: canvas,
 					width,
 					height,
-					backgroundAlpha: 0
+					backgroundAlpha: 0,
+					// 移动端高分屏按 DPR 渲染（上限 2），否则模型会发虚
+					resolution: Math.min(window.devicePixelRatio || 1, 2),
+					autoDensity: true
 				})
 
-				const model = await Live2DModel.from(MODEL_URL)
+				model = await Live2DModel.from(MODEL_URL)
 				app.stage.addChild(model)
 
 				model.anchor.set(0.5, 0.5)
-				model.x = width / 2
-				model.y = height / 2
-				model.scale.set(0.18, 0.18)
+				fitModel()
+
+				window.addEventListener('resize', handleResize)
+				window.addEventListener('orientationchange', handleResize)
 
 				setStatus('ready')
 			} catch (err) {
@@ -103,12 +130,21 @@ export default function Live2DViewer() {
 			}
 		}
 
+		// 等布局完成后重新适配（旋转屏幕 / 地址栏收起都会改变容器尺寸）
+		const handleResize = () => {
+			window.requestAnimationFrame(fitModel)
+		}
+
 		init()
 
 		return () => {
+			window.removeEventListener('resize', handleResize)
+			window.removeEventListener('orientationchange', handleResize)
 			if (app !== null && typeof app === 'object' && 'destroy' in app && typeof app.destroy === 'function') {
 				app.destroy({ removeView: true })
 			}
+			app = null
+			model = null
 			container.innerHTML = ''
 		}
 	}, [])
