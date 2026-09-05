@@ -54,7 +54,7 @@ export default function CurrentStatus({ device, displayName: displayNameProp }: 
             <p className="text-xs text-(--status-text-muted) mb-1">
               {displayName} 现在...
             </p>
-            <p className="text-lg font-bold text-brand leading-relaxed status-text">
+            <p className="text-lg font-bold text-(--status-primary) leading-relaxed status-text">
               {description}
             </p>
             {detail && (

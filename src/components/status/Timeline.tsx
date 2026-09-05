@@ -125,7 +125,7 @@ export default function Timeline({ segments, summary, currentAppByDevice }: Prop
                       {/* Current indicator or color dot */}
                       <div className="shrink-0 w-16 px-2 py-2 flex items-center justify-center gap-1">
                         {app.isCurrent ? (
-                          <span className="text-[10px] font-bold text-brand current-badge">
+                          <span className="text-[10px] font-bold text-(--status-primary) current-badge">
                             ▸ 当前
                           </span>
                         ) : (
@@ -148,7 +148,7 @@ export default function Timeline({ segments, summary, currentAppByDevice }: Prop
 
                       {/* Duration */}
                       <div className="shrink-0 w-16 px-2 py-2 text-right">
-                        <span className="text-[10px] font-mono text-primary font-medium">
+                        <span className="text-[10px] font-mono text-(--status-text) font-medium">
                           {formatDuration(app.totalMinutes)}
                         </span>
                       </div>

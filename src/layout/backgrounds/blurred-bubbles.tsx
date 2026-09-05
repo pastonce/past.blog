@@ -22,7 +22,9 @@ export default function BlurredBubblesBackground({
 	targetFps = 6,
 	debugFps = false,
 	startDelayMs = 1500,
-	regenerateKey = 0
+	regenerateKey = 0,
+	absolute = false,
+	alpha = 0.8
 }) {
 	const ref = useRef<HTMLCanvasElement>(null)
 	const noise = useRef(makeNoise2D())
@@ -239,7 +241,7 @@ export default function BlurredBubblesBackground({
 			for (const b of bubbles) {
 				ctx.save()
 				ctx.filter = `blur(${b.blur}px)`
-				ctx.globalAlpha = 0.8
+				ctx.globalAlpha = alpha
 				ctx.beginPath()
 				ctx.fillStyle = b.color
 				ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2)
@@ -306,14 +308,14 @@ export default function BlurredBubblesBackground({
 			ro.disconnect()
 			if (resizeTimer !== null) window.clearTimeout(resizeTimer)
 		}
-	}, [colors, regenerateKey])
+	}, [colors, regenerateKey, alpha])
 
 	return (
 		<motion.div
 			animate={{ opacity: 1 }}
 			initial={{ opacity: 0 }}
 			transition={{ duration: 1 }}
-			className='fixed inset-0 z-0 overflow-hidden'
+			className={absolute ? 'absolute inset-0 z-0 overflow-hidden' : 'fixed inset-0 z-0 overflow-hidden'}
 			style={{ filter: 'blur(50px)' }}>
 			<canvas ref={ref} className='h-full w-full' style={{ display: 'block' }} />
 		</motion.div>

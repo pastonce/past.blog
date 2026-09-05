@@ -1,31 +1,14 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useDashboard } from "@/hooks/status/useDashboard";
-// import { useConfig, useConfigLoader, ConfigContext } from "@/hooks/status/useConfig";
 import type { SiteConfig, DeviceState } from "@/lib/status-api";
 import { defaultConfig, fetchHealthData } from "@/lib/status-api";
-// import Header from "@/components/status/Header";
 import CurrentStatus from "@/components/status/CurrentStatus";
 import DeviceCard from "@/components/status/DeviceCard";
 import DatePicker from "@/components/status/DatePicker";
 import Timeline from "@/components/status/Timeline";
 import HealthData from "@/components/status/HealthData";
-// import SiteMetadataSync from "@/components/status/SiteMetadataSync";
 import { type CurrentResponse, type TimelineResponse } from "@/lib/status-api";
-
-// interface DashboardOption extends DashboardProfile {
-//   isPrimary: boolean;
-// }
-
-// interface DashboardSnapshot extends DashboardOption {
-//   onlineDevices: number;
-//   totalDevices: number;
-//   viewerCount: number;
-//   activeLabel: string;
-//   statusText: string;
-//   reachable: boolean;
-// }
 
 interface StatusCardProps {
   current: CurrentResponse | null;
@@ -47,79 +30,9 @@ export default function StatusCard({
   const ConfigContext = createContext<SiteConfig>(defaultConfig);
   const config = useContext(ConfigContext);
   const { displayName } = config;
-  // const dashboards = useMemo<DashboardOption[]>(() => {
-  //   return [
-  //     {
-  //       id: "local",
-  //       name: displayName,
-  //       url: "",
-  //       description: `${displayName} 的主面板`,
-  //       isPrimary: true,
-  //     },
-  //     ...config.dashboards.map((dashboard) => ({
-  //       ...dashboard,
-  //       isPrimary: false,
-  //     })),
-  //   ];
-  // }, [config.dashboards, displayName]);
-
-  // const [selectedDashboardId, setSelectedDashboardId] = useState("local");
-  // const [dashboardSnapshots, setDashboardSnapshots] = useState<Record<string, DashboardSnapshot>>({});
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const [tab, setTab] = useState<"activity" | "health">("activity");
   const [hasHealthData, setHasHealthData] = useState(false);
-  // 多面板「总览」是一个独立视图模式：打开时只展示各面板的卡片，
-  // 当前面板的详细内容（状态气泡/设备/时间线）整体让位；点任意卡片
-  // 即切换到该面板并自动回到详细视图。竖屏访问为主，两种模式不叠加。
-  // const [overviewExpanded, setOverviewExpanded] = useState(false);
-
-  // useEffect(() => {
-  //   if (!dashboards.some((dashboard) => dashboard.id === selectedDashboardId)) {
-  //     setSelectedDashboardId("local");
-  //   }
-  // }, [dashboards, selectedDashboardId]);
-
-  // const activeDashboard = useMemo(() => {
-  //   return dashboards.find((dashboard) => dashboard.id === selectedDashboardId) ?? dashboards[0];
-  // }, [dashboards, selectedDashboardId]);
-  // const activeDashboardId = activeDashboard?.isPrimary ? undefined : activeDashboard?.id;
-  // const { current, timeline, selectedDate, changeDate, loading, error, viewerCount } = useDashboard(activeDashboardId);
-
-  // useEffect(() => {
-  //   setSelectedDeviceId(null);
-  //   setTab("activity");
-  // }, [selectedDashboardId]);
-
-  // useEffect(() => {
-  //   let disposed = false;
-
-  //   const loadSnapshots = async () => {
-  //     const entries = await Promise.all(
-  //       dashboards.map(async (dashboard) => {
-  //         try {
-  //           const response = await fetchCurrent(
-  //             undefined,
-  //             dashboard.isPrimary ? undefined : { dashboardId: dashboard.id },
-  //           );
-  //           return [dashboard.id, buildDashboardSnapshot(dashboard, response)] as const;
-  //         } catch {
-  //           return [dashboard.id, buildDashboardSnapshot(dashboard, null)] as const;
-  //         }
-  //       }),
-  //     );
-
-  //     if (!disposed) {
-  //       setDashboardSnapshots(Object.fromEntries(entries));
-  //     }
-  //   };
-
-  //   loadSnapshots();
-  //   const timer = window.setInterval(loadSnapshots, 10_000);
-  //   return () => {
-  //     disposed = true;
-  //     window.clearInterval(timer);
-  //   };
-  // }, [dashboards]);
 
   useEffect(() => {
     if (!hasHealthData && tab === "health") setTab("activity");
@@ -172,7 +85,6 @@ export default function StatusCard({
       selectedDate,
       controller.signal,
       selectedDeviceIdResolved,
-      // activeDashboardId ? { dashboardId: activeDashboardId } : undefined,
     )
       .then((result) => {
         if (!controller.signal.aborted) {
@@ -200,11 +112,6 @@ export default function StatusCard({
     };
   }, [timeline, selectedDevice]);
 
-  // const resolvedSnapshots = useMemo(() => {
-  //   return dashboards.map((dashboard) => {
-  //     return dashboardSnapshots[dashboard.id] ?? buildDashboardSnapshot(dashboard, null);
-  //   });
-  // }, [dashboardSnapshots, dashboards]);
   // 所有设备离线时给 body 添加 status-night-mode class
   useEffect(() => {
     const statusPage = document.querySelector(".status-page");
@@ -245,8 +152,8 @@ export default function StatusCard({
       )} */}
 
       {error && (
-        <div className="vn-bubble mb-4 border-primary">
-          <p className="text-sm text-primary">
+        <div className="vn-bubble mb-4 border-(--status-primary)">
+          <p className="text-sm text-(--status-text)">
             (&gt;_&lt;) {displayName} 的面板连接失败了喵...
           </p>
           <p className="text-xs text-(--status-text-muted) mt-1">
@@ -267,27 +174,6 @@ export default function StatusCard({
         </div>
       )}
 
-      {/* {!isSinglePanel && overviewExpanded && (
-        <section className="mb-6">
-          <p className="text-xs text-[var(--status-text-muted)] mb-3">
-            共接入 {resolvedSnapshots.length} 个面板，点击卡片进入对应面板 ↓
-          </p>
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-            {resolvedSnapshots.map((dashboard) => (
-              <DashboardOverviewCard
-                key={dashboard.id}
-                dashboard={dashboard}
-                selected={dashboard.id === activeDashboard?.id}
-                onSelect={() => {
-                  setSelectedDashboardId(dashboard.id);
-                  setOverviewExpanded(false);
-                }}
-              />
-            ))}
-          </div>
-        </section>
-      )} */}
-
       {current && (
         <>
           <CurrentStatus device={selectedDevice} displayName={displayName} />
@@ -297,7 +183,7 @@ export default function StatusCard({
                 竖屏访问时省出的空间让时间线不用滚动就能看到 */}
             {devices.length !== 1 && (
               <div className="lg:w-56 shrink-0">
-                <h2 className="text-xs font-bold text-(--status-text-muted) uppercase tracking-wider mb-2">
+                <h2 className="text-xs font-bold text-(--status-primary) uppercase tracking-wider mb-2">
                   Devices
                 </h2>
                 {devices.length === 0 ? (
@@ -333,7 +219,7 @@ export default function StatusCard({
                       onClick={() => setTab("activity")}
                       className={`pill-btn text-xs px-3 py-1 ${
                         tab === "activity"
-                          ? "bg-primary text-white border-primary"
+                          ? "bg-(--status-primary) text-white border-(--status-primary)"
                           : ""
                       }`}
                     >
@@ -344,7 +230,7 @@ export default function StatusCard({
                       onClick={() => setTab("health")}
                       className={`pill-btn text-xs px-3 py-1 ${
                         tab === "health"
-                          ? "bg-primary text-white border-primary"
+                          ? "bg-(--status-primary) text-white border-(--status-primary)"
                           : ""
                       }`}
                     >
@@ -355,8 +241,6 @@ export default function StatusCard({
               </div>
 
               <div className="separator-dashed mb-3" />
-
-              {/* {devices.length > 1 && <DeviceOverview devices={devices} />} */}
 
               {tab === "activity" ? (
                 <>
@@ -380,7 +264,6 @@ export default function StatusCard({
                 <HealthData
                   selectedDate={selectedDate}
                   deviceId={selectedDevice?.device_id}
-                  // dashboardId={activeDashboardId}
                 />
               )}
             </div>
@@ -396,153 +279,3 @@ export default function StatusCard({
     </div>
   );
 }
-
-// function buildDashboardSnapshot(
-//   dashboard: DashboardOption,
-//   current: CurrentResponse | null,
-// ): DashboardSnapshot {
-//   if (!current) {
-//     return {
-//       ...dashboard,
-//       onlineDevices: 0,
-//       totalDevices: 0,
-//       viewerCount: 0,
-//       activeLabel: "暂时无法访问",
-//       statusText: "连接失败",
-//       reachable: false,
-//     };
-//   }
-
-//   const onlineDevices = current.devices.filter((device) => device.is_online === 1);
-//   const activeDevice = onlineDevices[0] ?? current.devices[0];
-//   const activeLabel = activeDevice
-//     ? activeDevice.is_online === 1
-//       ? activeDevice.app_name === "idle"
-//         ? "暂时离开"
-//         : activeDevice.app_name || "在线"
-//       : "当前离线"
-//     : "暂无设备";
-
-//   return {
-//     ...dashboard,
-//     onlineDevices: onlineDevices.length,
-//     totalDevices: current.devices.length,
-//     viewerCount: current.viewer_count ?? 0,
-//     activeLabel,
-//     statusText: onlineDevices.length > 0 ? "在线" : current.devices.length > 0 ? "离线" : "暂无设备",
-//     reachable: true,
-//   };
-// }
-
-// function DashboardSwitcher({
-//   dashboards,
-//   selectedDashboardId,
-//   onSelect,
-//   overviewExpanded,
-//   onToggleOverview,
-// }: {
-//   dashboards: DashboardSnapshot[];
-//   selectedDashboardId: string;
-//   onSelect: (id: string) => void;
-//   overviewExpanded: boolean;
-//   onToggleOverview: () => void;
-// }) {
-//   return (
-//     <section className="mb-4">
-//       <div className="flex flex-wrap items-center gap-2">
-//         <span className="text-xs font-bold uppercase tracking-[0.25em] text-[var(--status-text-muted)] mr-1">
-//           Panels
-//         </span>
-//         {dashboards.map((dashboard) => (
-//           <button
-//             key={dashboard.id}
-//             type="button"
-//             onClick={() => onSelect(dashboard.id)}
-//             className={`panel-chip ${dashboard.id === selectedDashboardId ? "panel-chip-active" : ""}`}
-//           >
-//             <span>{dashboard.name}</span>
-//             <span className="text-[10px] opacity-70">{dashboard.onlineDevices}/{dashboard.totalDevices}</span>
-//           </button>
-//         ))}
-//         <button
-//           type="button"
-//           onClick={onToggleOverview}
-//           className="panel-chip text-[10px]"
-//           aria-expanded={overviewExpanded}
-//         >
-//           {overviewExpanded ? "返回 ▴" : "总览 ▾"}
-//         </button>
-//       </div>
-//     </section>
-//   );
-// }
-
-// function DashboardOverviewCard({
-//   dashboard,
-//   selected,
-//   onSelect,
-// }: {
-//   dashboard: DashboardSnapshot;
-//   selected: boolean;
-//   onSelect: () => void;
-// }) {
-//   return (
-//     <button
-//       type="button"
-//       onClick={onSelect}
-//       className={`dashboard-overview-card text-left ${selected ? "dashboard-overview-card-active" : ""}`}
-//     >
-//       <div className="flex items-start justify-between gap-3">
-//         {/* min-w-0 让长 description 在自己的格子里收缩换行，
-//             而不是撑开容器把右侧状态 pill 挤成竖排 */}
-//         <div className="flex-1 min-w-0">
-//           <p className="text-sm font-semibold text-[var(--status-text)] truncate">{dashboard.name}</p>
-//           <p className="text-[11px] text-[var(--status-text-muted)] mt-1 line-clamp-2">
-//             {dashboard.description ?? "Live Dashboard 聚合面板"}
-//           </p>
-//         </div>
-//         <span className={`status-pill flex-shrink-0 whitespace-nowrap ${dashboard.onlineDevices > 0 ? "status-pill-online" : "status-pill-offline"}`}>
-//           {dashboard.statusText}
-//         </span>
-//       </div>
-
-//       <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-//         <div>
-//           <p className="text-[10px] uppercase tracking-wide text-[var(--status-text-muted)]">Devices</p>
-//           <p className="text-lg font-semibold text-[var(--status-text)]">{dashboard.onlineDevices}/{dashboard.totalDevices}</p>
-//         </div>
-//         <div>
-//           <p className="text-[10px] uppercase tracking-wide text-[var(--status-text-muted)]">Viewers</p>
-//           <p className="text-lg font-semibold text-[var(--status-text)]">{dashboard.viewerCount}</p>
-//         </div>
-//         <div>
-//           <p className="text-[10px] uppercase tracking-wide text-[var(--status-text-muted)]">Status</p>
-//           <p className="text-sm font-semibold text-[var(--status-text)] truncate">{dashboard.activeLabel}</p>
-//         </div>
-//       </div>
-//     </button>
-//   );
-// }
-
-// const platformIcons: Record<string, string> = {
-//   windows: "\u{1F4BB}",
-//   android: "\u{1F4F1}",
-//   macos: "\u{1F5A5}",
-//   linux: "\u{1F427}",
-// };
-
-// function DeviceOverview({ devices }: { devices: DeviceState[] }) {
-//   return (
-//     <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-0.5 text-[11px] text-(--status-text-muted)">
-//       {devices.map((device) => {
-//         const isOnline = device.is_online === 1;
-//         const icon = platformIcons[device.platform] || "\u{1F4BB}";
-//         return (
-//           <span key={device.device_id} className={isOnline ? "" : "opacity-40"}>
-//             {icon} {device.device_name} · {isOnline ? (device.app_name === "idle" ? "暂时离开" : device.app_name || "idle") : "offline"}
-//           </span>
-//         );
-//       })}
-//     </div>
-//   );
-// }

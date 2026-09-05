@@ -32,7 +32,7 @@ export default function Header({ serverTime, viewerCount = 0, displayName: displ
     <header className="relative -mt-5.5 pt-2 separator-dashed">
       {/* Center: title + greeting */}
       <div className="absolute left-1/2 -translate-x-1/2 text-center">
-        <h1 className="titleNow text-xl font-bold text-brand leading-tight">
+        <h1 className="titleNow text-xl font-bold text-(--status-primary) leading-tight">
           {displayName} Now
         </h1>
         <p className="greeting text-xs text-(--status-text-muted)">
@@ -45,11 +45,11 @@ export default function Header({ serverTime, viewerCount = 0, displayName: displ
       <div className="flex justify-end">
         <div className="text-right flex flex-col items-end gap-0.5">
           {viewerCount > 0 && (
-            <p className="text-xs text-brand font-medium">
+            <p className="text-xs text-(--status-primary) font-medium">
               {viewerCount} 人在看喵~
             </p>
           )}
-          <p className="timeNum text-sm font-mono font-medium text-brand-secondary">
+          <p className="timeNum text-sm font-mono font-medium text-(--status-secondary)">
             {timeStr}
           </p>
         </div>

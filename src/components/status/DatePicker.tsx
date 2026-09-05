@@ -34,7 +34,7 @@ export default function DatePicker({ selectedDate, onChange }: Props) {
     <div className="flex items-center gap-2">
       {/* Calendar flip visual */}
       <div className="card-decorated rounded-md w-14 h-16 flex flex-col items-center justify-center shrink-0">
-        <span className="text-[10px] font-bold text-brand uppercase leading-none">
+        <span className="text-[10px] font-bold text-(--status-primary) uppercase leading-none">
           {new Date(selectedDate + "T00:00:00").toLocaleDateString("en-US", { month: "short" })}
         </span>
         <span className="text-xl font-bold leading-tight">
