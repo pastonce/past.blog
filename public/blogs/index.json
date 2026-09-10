@@ -10,7 +10,7 @@
     "summary": "安装 Rust 并通过一段简单的程序实现了解 Rust 的部分特性",
     "cover": "/blogs/Rust-Now/717c1ce891924139.png",
     "hidden": false,
-    "category": ""
+    "category": "Rust自学"
   },
   {
     "slug": "Type-Traits",
@@ -326,7 +326,7 @@
     "summary": "调研并实现了PCA和t-SNE这两种高维数据降维算法，通过在MNIST数据子集上的实际运用，并将结果以可视化领域的水平呈现，更深入地学习到了降维相关的知识和经验。",
     "cover": "/blogs/data-visualization-dimension-reduction/b5de66e34fb6ebb7.png",
     "hidden": false,
-    "category": ""
+    "category": "课程探索"
   },
   {
     "slug": "thread-and-timer",
@@ -535,7 +535,7 @@
     "summary": "总结一下第一次使用D3.js进行数据可视化的经验与成果",
     "cover": "/blogs/data-visualization-iris/89de52262b043cca.png",
     "hidden": false,
-    "category": ""
+    "category": "课程探索"
   },
   {
     "slug": "use-of-array",
