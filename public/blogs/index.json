@@ -1,5 +1,18 @@
 [
   {
+    "slug": "Rust-Now",
+    "title": "[Rust 1] | 从零开始的 Rust 编程",
+    "tags": [
+      "Rust",
+      "学习"
+    ],
+    "date": "2026-09-10T21:19",
+    "summary": "安装 Rust 并通过一段简单的程序实现了解 Rust 的部分特性",
+    "cover": "/blogs/Rust-Now/717c1ce891924139.png",
+    "hidden": false,
+    "category": ""
+  },
+  {
     "slug": "Type-Traits",
     "title": "[STL 16] | 类型特征Type Traits的使用及实现方式",
     "tags": [
