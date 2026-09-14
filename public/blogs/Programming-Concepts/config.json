@@ -1,0 +1,12 @@
+{
+  "title": "[Rust 2] | 编程相关概念介绍",
+  "tags": [
+    "Rust",
+    "学习"
+  ],
+  "date": "2026-09-14T16:07",
+  "summary": "了解有关编程语言的静态/动态、强/弱类型、编译/解释型等重要概念",
+  "cover": "/blogs/Programming-Concepts/717c1ce891924139.png",
+  "hidden": false,
+  "category": "Rust自学"
+}
