@@ -1,0 +1,12 @@
+{
+  "title": "[Rust 3] | 基本语法与数据类型、函数与控制流",
+  "tags": [
+    "Rust",
+    "学习"
+  ],
+  "date": "2026-09-21T21:58",
+  "summary": "简单介绍 Rust 的基本语法与数据类型、函数与控制流相关概念，大部分已在其他语言中接触过，仅需注意 Rust 独有的特性",
+  "cover": "/blogs/basic-function-control/717c1ce891924139.png",
+  "hidden": false,
+  "category": "Rust自学"
+}
