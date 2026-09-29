@@ -1,5 +1,18 @@
 [
   {
+    "slug": "basic-function-control",
+    "title": "[Rust 3] | 基本语法与数据类型、函数与控制流",
+    "tags": [
+      "Rust",
+      "学习"
+    ],
+    "date": "2026-09-21T21:58",
+    "summary": "简单介绍 Rust 的基本语法与数据类型、函数与控制流相关概念，大部分已在其他语言中接触过，仅需注意 Rust 独有的特性",
+    "cover": "/blogs/basic-function-control/717c1ce891924139.png",
+    "hidden": false,
+    "category": "Rust自学"
+  },
+  {
     "slug": "Programming-Concepts",
     "title": "[Rust 2] | 编程相关概念介绍",
     "tags": [
@@ -276,7 +289,7 @@
   },
   {
     "slug": "Cardcaptor-Sakura",
-    "title": "[✦✦✦] | 1212121212121212",
+    "title": "[✦✦✦] | 2121212121212121",
     "tags": [
       "◼◼",
       "◼◼◼",
@@ -284,7 +297,7 @@
     ],
     "date": "2026-05-21T10:42",
     "summary": "✦✦✦✦✦✦✦✦",
-    "cover": "/blogs/Cardcaptor-Sakura/8df9bae4838720b6.png",
+    "cover": "/blogs/Cardcaptor-Sakura/9027f2c7afda252e.png",
     "hidden": false,
     "category": ""
   },
