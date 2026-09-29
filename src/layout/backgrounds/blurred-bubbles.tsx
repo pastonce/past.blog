@@ -46,6 +46,10 @@ export default function BlurredBubblesBackground({
 
 		// 1s debounce for resize observer
 		let resizeTimer: number | null = null
+		// 本次 effect 的动画是否已作废：延时启动的循环必须检查这个标志，
+		// 否则 effect 重跑后旧循环会继续用旧色板/旧位置往同一块画布上绘制
+		let cancelled = false
+		let startTimer: number | null = null
 		const handleResize: ResizeObserverCallback = () => {
 			if (!canvas || !ctx) return
 			const nextWidth = canvas.clientWidth
@@ -251,7 +255,7 @@ export default function BlurredBubblesBackground({
 		}
 
 		function frame(t: number) {
-			if (!ctx) return
+			if (!ctx || cancelled) return
 
 			// Rate limiting
 			{
@@ -296,7 +300,12 @@ export default function BlurredBubblesBackground({
 		}
 
 		if (window.innerWidth < 640) {
-			setTimeout(() => {
+			// 必须记住这个 timer 并在 cleanup 里清掉：延时启动期间 effect 很可能
+			// 已经重跑（例如设备全部离线 → 切换夜模式色板），漏清会让旧循环活下来，
+			// 与新循环交替 clearRect/绘制 → 背景在两套色板之间来回闪烁
+			startTimer = window.setTimeout(() => {
+				startTimer = null
+				if (cancelled) return
 				animRef.current = requestAnimationFrame(frame)
 			}, startDelayMs)
 		}
@@ -304,7 +313,10 @@ export default function BlurredBubblesBackground({
 		draw()
 
 		return () => {
+			cancelled = true
+			if (startTimer !== null) window.clearTimeout(startTimer)
 			cancelAnimationFrame(animRef.current)
+			animRef.current = 0
 			ro.disconnect()
 			if (resizeTimer !== null) window.clearTimeout(resizeTimer)
 		}
