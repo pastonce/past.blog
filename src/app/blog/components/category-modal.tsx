@@ -4,6 +4,7 @@ import { useCallback, useState, type DragEvent } from 'react'
 import dayjs from 'dayjs'
 import type { BlogIndexItem } from '@/hooks/use-blog-index'
 import { DialogModal } from '@/components/dialog-modal'
+import { Select } from '@/components/select'
 import { X } from 'lucide-react'
 
 interface CategoryModalProps {
@@ -120,17 +121,12 @@ export function CategoryModal({
 								{item.title || item.slug}
 								<span className='text-secondary ml-2 text-xs'>{dayjs(item.date).format('YYYY-MM-DD')}</span>
 							</div>
-							<select
+							<Select
 								value={item.category || ''}
-								onChange={e => onAssignCategory(item.slug, e.target.value)}
-								className='focus:border-brand rounded-lg border px-3 py-2 text-sm outline-none'>
-								<option value=''>未分类</option>
-								{categoryList.map(cat => (
-									<option key={cat} value={cat}>
-										{cat}
-									</option>
-								))}
-							</select>
+								onChange={value => onAssignCategory(item.slug, value)}
+								options={[{ value: '', label: '未分类' }, ...categoryList.map(cat => ({ value: cat, label: cat }))]}
+								className='min-w-32 text-sm'
+							/>
 						</div>
 					))}
 					{editableItems.length === 0 && <div className='text-secondary text-sm'>暂无文章</div>}

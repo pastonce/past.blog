@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { motion } from 'motion/react'
+import { animate, mix, motion } from 'motion/react'
 import siteContent from '@/config/site-content.json'
 import { makeNoise2D, rand } from './utils'
 
@@ -29,6 +29,12 @@ export default function BlurredBubblesBackground({
 	const ref = useRef<HTMLCanvasElement>(null)
 	const noise = useRef(makeNoise2D())
 	const animRef = useRef(0)
+	const appearanceRef = useRef({ colors, alpha })
+	const recolorRef = useRef<((colors: string[], alpha: number) => (() => void) | undefined) | null>(null)
+
+	useEffect(() => {
+		appearanceRef.current = { colors, alpha }
+	}, [colors, alpha])
 
 	useEffect(() => {
 		const canvas = ref.current
@@ -43,6 +49,7 @@ export default function BlurredBubblesBackground({
 		ctx.scale(DPR, DPR)
 
 		const effectiveFps = Math.max(1, targetFps)
+		let currentAlpha = appearanceRef.current.alpha
 
 		// 1s debounce for resize observer
 		let resizeTimer: number | null = null
@@ -145,7 +152,7 @@ export default function BlurredBubblesBackground({
 					x,
 					y,
 					r,
-					color: colors[bubbles.length % colors.length | 0],
+					color: appearanceRef.current.colors[(bubbles.length % appearanceRef.current.colors.length) | 0] || 'transparent',
 					vx: rand(-0.2, 0.2),
 					vy: rand(-0.2, 0.2),
 					jitter: rand(0.6, 1.2),
@@ -245,13 +252,46 @@ export default function BlurredBubblesBackground({
 			for (const b of bubbles) {
 				ctx.save()
 				ctx.filter = `blur(${b.blur}px)`
-				ctx.globalAlpha = alpha
+				ctx.globalAlpha = currentAlpha
 				ctx.beginPath()
 				ctx.fillStyle = b.color
 				ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2)
 				ctx.fill()
 				ctx.restore()
 			}
+		}
+
+		// 切换配色只渐变现有气泡，不清空画布或重新随机布局；快速切换从当前颜色继续。
+		recolorRef.current = (nextColors, nextAlpha) => {
+			const targets = bubbles.map((_, index) => nextColors[index % nextColors.length] || 'transparent')
+			if (currentAlpha === nextAlpha && bubbles.every((bubble, index) => bubble.color === targets[index])) return
+			const colorMixers = bubbles.map((bubble, index) => mix(bubble.color, targets[index]))
+			const alphaMixer = mix(currentAlpha, nextAlpha)
+			let lastPaint = 0
+			const repaint = () => {
+				ctx.clearRect(0, 0, width, height)
+				draw()
+			}
+			const animation = animate(0, 1, {
+				duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+					? 0
+					: parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--theme-transition-duration')) || 0.8,
+				ease: 'easeInOut',
+				onUpdate: progress => {
+					bubbles.forEach((bubble, index) => {
+						bubble.color = colorMixers[index](progress)
+					})
+					currentAlpha = alphaMixer(progress)
+					// 沿用背景帧率限制，避免模糊画布在颜色过渡时大量重绘。
+					const now = performance.now()
+					if (now - lastPaint >= FRAME_INTERVAL) {
+						repaint()
+						lastPaint = now
+					}
+				},
+				onComplete: repaint
+			})
+			return () => animation.stop()
 		}
 
 		function frame(t: number) {
@@ -301,7 +341,7 @@ export default function BlurredBubblesBackground({
 
 		if (window.innerWidth < 640) {
 			// 必须记住这个 timer 并在 cleanup 里清掉：延时启动期间 effect 很可能
-			// 已经重跑（例如设备全部离线 → 切换夜模式色板），漏清会让旧循环活下来，
+			// 已经重跑（例如预览配置后重新生成背景），漏清会让旧循环活下来，
 			// 与新循环交替 clearRect/绘制 → 背景在两套色板之间来回闪烁
 			startTimer = window.setTimeout(() => {
 				startTimer = null
@@ -314,13 +354,16 @@ export default function BlurredBubblesBackground({
 
 		return () => {
 			cancelled = true
+			recolorRef.current = null
 			if (startTimer !== null) window.clearTimeout(startTimer)
 			cancelAnimationFrame(animRef.current)
 			animRef.current = 0
 			ro.disconnect()
 			if (resizeTimer !== null) window.clearTimeout(resizeTimer)
 		}
-	}, [colors, regenerateKey, alpha])
+	}, [count, minRadius, maxRadius, bottomBandStart, speed, noiseScale, noiseTimeScale, targetFps, debugFps, startDelayMs, regenerateKey])
+
+	useEffect(() => recolorRef.current?.(colors, alpha), [colors, alpha, regenerateKey])
 
 	return (
 		<motion.div

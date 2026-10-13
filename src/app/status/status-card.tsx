@@ -66,11 +66,6 @@ export default function StatusCard({
     }
     return map;
   }, [current?.devices]);
-  // 所有设备是否都离线
-  const allOffline = useMemo(() => {
-    if (!current?.devices || current.devices.length === 0) return false;
-    return current.devices.every((device) => device.is_online !== 1);
-  }, [current?.devices]);
   // 根据当前选中的设备获取健康数据
   useEffect(() => {
     if (!selectedDate || !selectedDeviceIdResolved) {
@@ -111,22 +106,6 @@ export default function StatusCard({
       summary: deviceId in summary ? { [deviceId]: summary[deviceId] } : {},
     };
   }, [timeline, selectedDevice]);
-
-  // 所有设备离线时给 body 添加 status-night-mode class
-  useEffect(() => {
-    const statusPage = document.querySelector(".status-page");
-
-    if (!statusPage) return;
-
-    statusPage.classList.toggle(
-      "status-night-mode",
-      allOffline,
-    );
-
-    return () => {
-      statusPage.classList.remove("status-night-mode");
-    };
-  }, [allOffline]);
 
   // 只有本地一个面板时，Panels 切换器和总览大卡片的信息与下方状态气泡/
   // 设备列表完全重复，纯占竖向空间——整个区域不渲染

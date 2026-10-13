@@ -25,9 +25,10 @@ export function ColorPicker({ value = '#000000', onChange, className }: ColorPic
 	useEffect(() => {
 		if (open && triggerRef.current) {
 			const rect = triggerRef.current.getBoundingClientRect()
+			// 保持弹层在视口内，配置菜单顶部和手机端也能打开配色面板。
 			setPosition({
-				top: rect.top - 240,
-				left: rect.left
+				top: Math.max(8, Math.min(rect.top - 240, window.innerHeight - 280)),
+				left: Math.max(8, Math.min(rect.left, window.innerWidth - 232))
 			})
 		}
 	}, [open])

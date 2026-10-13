@@ -104,7 +104,7 @@ export function Select({ value, onChange, options, className, disabled }: Select
 				onClick={() => !disabled && setOpen(!open)}
 				disabled={disabled}
 				className={cn(
-					'bg-card relative flex items-center justify-between gap-2 rounded-lg border px-3 py-2 text-xs transition-all',
+					'bg-card text-primary relative flex items-center justify-between gap-2 rounded-lg border px-3 py-2 text-xs transition-all',
 					'active:scale-[0.98]',
 					'focus:ring-brand/20 focus:ring-2 focus:outline-none',
 					disabled && 'cursor-not-allowed opacity-50',
@@ -132,14 +132,14 @@ export function Select({ value, onChange, options, className, disabled }: Select
 								animate={{ opacity: 1, y: 0, scale: 1 }}
 								exit={{ opacity: 0, y: -8, scale: 0.95 }}
 								transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-								className='bg-card/95 fixed z-50 rounded-xl border backdrop-blur-xl'
+								className='bg-bg/95 text-primary fixed z-50 rounded-xl border backdrop-blur-xl'
 								style={{
 									top: `${position.top}px`,
 									left: `${position.left}px`,
 									width: `${position.width}px`,
 									boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
 								}}>
-								<div className='scrollbar-none max-h-64 overflow-y-auto p-1.5'>
+								<div className='max-h-64 scrollbar-none overflow-y-auto p-1.5'>
 									{options.map(option => {
 										const isSelected = option.value === value
 										return (
@@ -150,7 +150,7 @@ export function Select({ value, onChange, options, className, disabled }: Select
 												className={cn(
 													'w-full rounded-lg px-3 py-2 text-left text-xs transition-all',
 													'active:scale-[0.98]',
-													isSelected ? 'bg-brand/10 text-brand font-medium' : 'hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
+													isSelected ? 'bg-brand/10 text-brand font-medium' : 'text-primary hover:bg-secondary/10'
 												)}>
 												{option.label}
 											</button>

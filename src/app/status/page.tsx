@@ -1,44 +1,37 @@
 'use client'
 
-import { createContext, useContext, useEffect, useMemo } from "react";
+import { createContext, useContext } from "react";
 import Live2DViewer from './live2d-viewer'
 import StatusCard from './status-card'
 import Header from '@/components/status/Header'
 import { useDashboard} from '@/hooks/status/useDashboard'
 import { type SiteConfig, defaultConfig } from "@/lib/status-api";
 import BlurredBubblesBackground from '@/layout/backgrounds/blurred-bubbles'
-import siteContent from '@/config/site-content.json'
-
-/** 夜模式气泡色板（与 status-night-mode 的 --status-* 保持一致） */
-const NIGHT_BUBBLE_COLORS = ['#4A3FA0', '#6358C5', '#392B78', '#C447A8', "#E36CC4", "#191923"]
+import { useConfigStore } from '@/app/(home)/stores/config-store'
+import { useThemeStore } from '@/hooks/use-theme'
+import { getThemeAppearance } from '@/lib/theme'
 
 export default function StatusPage() {
-  useEffect(() => {
-    return () => {
-      document.body.classList.remove("status-night-mode");
-    };
-  }, []);
-
   const { current, timeline, selectedDate, changeDate, loading, error, viewerCount } = useDashboard();
   const ConfigContext = createContext<SiteConfig>(defaultConfig);
   const config = useContext(ConfigContext);
   const { displayName } = config;
 
-  // 全部设备离线 → 夜模式
-  const allOffline = useMemo(() => {
-    if (!current?.devices || current.devices.length === 0) return false;
-    return current.devices.every((device) => device.is_online !== 1);
-  }, [current?.devices]);
+  // 与全站共用主题状态；设备上下线不再改变页面配色。
+  const mode = useThemeStore(state => state.mode);
+  const { siteContent, regenerateKey } = useConfigStore();
+  const appearance = getThemeAppearance(siteContent, mode);
+  const isDark = mode === 'dark';
 
   return (
-    <main className="status-page">
+    <main className={`status-page${isDark ? ' status-night-mode' : ''}`}>
       {/* 背景气泡：复用主站 BlurredBubblesBackground，每次进入随机分布 */}
       <BlurredBubblesBackground
         absolute
-        colors={allOffline ? NIGHT_BUBBLE_COLORS : siteContent.backgroundColors}
-        alpha={allOffline ? 0.55 : 0.8}
+        colors={appearance.backgroundColors}
+        alpha={isDark ? 0.55 : 0.8}
         bottomBandStart={0.35}
-        regenerateKey={allOffline ? 1 : 0}
+        regenerateKey={regenerateKey}
       />
 
       {/* Sakura petal layer */}

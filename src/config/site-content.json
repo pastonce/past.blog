@@ -22,6 +22,28 @@
 		"#bfe8c2",
 		"#b9c78d"
 	],
+	"statusAccent": "#9ee4e4",
+	"statusSakuraBg": "#c7e7c5",
+	"darkMode": {
+		"theme": {
+			"colorBrand": "#C447A8",
+			"colorPrimary": "#F2F0EE",
+			"colorSecondary": "#aaa4bb",
+			"colorBrandSecondary": "#58D6D2",
+			"colorBg": "#191923",
+			"colorBorder": "#343442",
+			"colorCard": "#232330cc",
+			"colorArticle": "#191923ee"
+		},
+		"backgroundColors": ["#4A3FA0", "#6358C5", "#392B78", "#C447A8", "#E36CC4", "#191923"],
+		"statusAccent": "#4A3FA0",
+		"statusSakuraBg": "#df85c7",
+		"autoSwitch": {
+			"enabled": true,
+			"start": "00:00",
+			"end": "08:00"
+		}
+	},
 	"artImages": [
 		{
 			"id": "9a3d25cf936ec5e1",

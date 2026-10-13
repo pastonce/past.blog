@@ -240,6 +240,23 @@ export function ColorConfig({ formData, setFormData }: ColorConfigProps) {
 					</button>
 				))}
 			</div>
+
+			<div>
+				<label className='mb-2 block text-sm font-medium'>状态页装饰颜色</label>
+				<div className='grid grid-cols-2 gap-4'>
+					{(
+						[
+							{ key: 'statusAccent', label: '时间线点缀' },
+							{ key: 'statusSakuraBg', label: '花瓣与描边' }
+						] as const
+					).map(({ key, label }) => (
+						<div key={key} className='flex items-center gap-3'>
+							<ColorPicker value={formData[key] ?? siteContent[key]} onChange={value => setFormData(previous => ({ ...previous, [key]: value }))} />
+							<span className='text-xs'>{label}</span>
+						</div>
+					))}
+				</div>
+			</div>
 		</div>
 	)
 }

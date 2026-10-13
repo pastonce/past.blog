@@ -13,3 +13,323 @@
 		'PingFang SC', -apple-system, system-ui, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans', sans-serif, BlinkMacSystemFont, 'Helvetica Neue',
 		'Hiragino Sans GB', 'Microsoft YaHei', Arial;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 在根节点渐变颜色变量，让文字、边框、渐变和装饰共用过渡，不覆盖组件的位移动画。 */
+@property --color-primary {
+	syntax: '<color>';
+	inherits: true;
+	initial-value: #334f52;
+}
+
+@property --color-secondary {
+	syntax: '<color>';
+	inherits: true;
+	initial-value: #7b888e;
+}
+
+@property --color-brand-secondary {
+	syntax: '<color>';
+	inherits: true;
+	initial-value: #1fc9e7;
+}
+
+@property --color-bg {
+	syntax: '<color>';
+	inherits: true;
+	initial-value: #eeeeee;
+}
+
+@property --color-border {
+	syntax: '<color>';
+	inherits: true;
+	initial-value: #fff;
+}
+
+@property --color-brand {
+	syntax: '<color>';
+	inherits: true;
+	initial-value: #35bfab;
+}
+
+@property --color-card {
+	syntax: '<color>';
+	inherits: true;
+	initial-value: #ffffff66;
+}
+
+@property --color-article {
+	syntax: '<color>';
+	inherits: true;
+	initial-value: #ffffffcc;
+}
+
+@property --color-status-accent {
+	syntax: '<color>';
+	inherits: true;
+	initial-value: #9ee4e4;
+}
+
+@property --color-status-sakura {
+	syntax: '<color>';
+	inherits: true;
+	initial-value: #c7e7c5;
+}
+
+/* 日夜权重也在根节点渐变，用于旧组件中原来写死的颜色。 */
+@property --theme-night-weight {
+	syntax: '<percentage>';
+	inherits: true;
+	initial-value: 0%;
+}
+
+:root {
+	--theme-transition-duration: 0.8s;
+	--theme-night-weight: 0%;
+}
+html.dark {
+	--theme-night-weight: 100%;
+}
+
+html[data-theme-ready='true'] {
+	transition:
+		--color-primary var(--theme-transition-duration) ease,
+		--color-secondary var(--theme-transition-duration) ease,
+		--color-brand-secondary var(--theme-transition-duration) ease,
+		--color-bg var(--theme-transition-duration) ease,
+		--color-border var(--theme-transition-duration) ease,
+		--color-brand var(--theme-transition-duration) ease,
+		--color-card var(--theme-transition-duration) ease,
+		--color-article var(--theme-transition-duration) ease,
+		--color-status-accent var(--theme-transition-duration) ease,
+		--color-status-sakura var(--theme-transition-duration) ease,
+		--theme-night-weight var(--theme-transition-duration) ease;
+}
+
+html[data-theme-ready='true'] :is(.shiki, .shiki span) {
+	transition: color var(--theme-transition-duration) ease, background-color var(--theme-transition-duration) ease;
+}
+
+/* 颜色只由根节点插值一次。保留悬停位移、透明度和尺寸动画，代码高亮使用自身过渡。 */
+html[data-theme-changing='true'] :not(.shiki, .shiki *),
+html[data-theme-changing='true'] :not(.shiki, .shiki *)::before,
+html[data-theme-changing='true'] :not(.shiki, .shiki *)::after {
+	transition-property: none !important;
+}
+html[data-theme-changing='true'] .transition-all {
+	transition-property: opacity, transform, translate, scale, rotate, width, height, min-width, min-height, max-width, max-height, padding, margin, top, right, bottom, left, gap, filter, backdrop-filter, border-radius !important;
+}
+html[data-theme-changing='true'] .transition {
+	transition-property: opacity, transform, translate, scale, rotate, filter, backdrop-filter !important;
+}
+html[data-theme-changing='true'] :is(.transition-opacity, .theme-background-image, .code-block-copy-btn) {
+	transition-property: opacity !important;
+}
+html[data-theme-changing='true'] :is(.transition-transform, .status-page .panel-chip, .status-page .dashboard-overview-card) {
+	transition-property: transform, translate, scale, rotate !important;
+}
+
+.theme-background-image {
+	opacity: 1;
+	transition: opacity var(--theme-transition-duration) ease;
+}
+html.dark .theme-background-image {
+	opacity: 0.25;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html[data-theme-ready='true'],
+	html[data-theme-ready='true'] :is(.shiki, .shiki span),
+	.theme-background-image {
+		transition: none;
+	}
+}
+
+/* 旧控件以固定的日夜端点混合；回到白天时也连续变化，不撤掉夜间规则后跳回原色。 */
+
+html .bg-white,
+html .hover\:bg-white:hover { --theme-control-light-bg: #fff; }
+
+html .bg-white\/40 { --theme-control-light-bg: #fff6; }
+
+html .bg-white\/50 { --theme-control-light-bg: #ffffff80; }
+
+html .bg-white\/60,
+html .hover\:bg-white\/60:hover,
+html .focus\:bg-white\/60:focus { --theme-control-light-bg: #fff9; }
+
+html .bg-white\/70 { --theme-control-light-bg: #ffffffb3; }
+
+html .bg-white\/80,
+html .hover\:bg-white\/80:hover,
+html .focus\:bg-white\/80:focus { --theme-control-light-bg: #fffc; }
+
+html .bg-white\/90 { --theme-control-light-bg: #ffffffe6; }
+
+html .bg-gray-50,
+html .hover\:bg-gray-50:hover,
+html .focus\:bg-gray-50:focus { --theme-control-light-bg: var(--color-gray-50); }
+
+html .bg-gray-100,
+html .hover\:bg-gray-100:hover,
+html .focus\:bg-gray-100:focus { --theme-control-light-bg: var(--color-gray-100); }
+
+html .bg-gray-200,
+html .hover\:bg-gray-200:hover { --theme-control-light-bg: var(--color-gray-200); }
+
+html .bg-gray-300,
+html .hover\:bg-gray-300:hover { --theme-control-light-bg: var(--color-gray-300); }
+
+html .bg-slate-50 { --theme-control-light-bg: var(--color-slate-50); }
+
+html .bg-slate-100 { --theme-control-light-bg: var(--color-slate-100); }
+
+html .hover\:bg-gray-100\/50:hover { --theme-control-light-bg: color-mix(in srgb, var(--color-gray-100) 50%, transparent); }
+
+html .bg-red-50,
+html .hover\:bg-red-50:hover { --theme-control-light-bg: var(--color-red-50); }
+
+html .hover\:bg-red-100:hover { --theme-control-light-bg: var(--color-red-100); }
+
+html .bg-blue-50 { --theme-control-light-bg: var(--color-blue-50); }
+
+html .bg-blue-100 { --theme-control-light-bg: var(--color-blue-100); }
+
+html :where(.bg-white, .bg-white\/40, .bg-white\/50, .bg-white\/60, .bg-white\/70, .bg-white\/80, .bg-white\/90, .bg-gray-50, .bg-gray-100, .bg-gray-200, .bg-gray-300, .bg-slate-50, .bg-slate-100, .bg-red-50, .bg-blue-50, .bg-blue-100, .hover\:bg-white:hover, .hover\:bg-white\/60:hover, .hover\:bg-white\/80:hover, .hover\:bg-gray-50:hover, .hover\:bg-gray-100:hover, .hover\:bg-gray-100\/50:hover, .hover\:bg-gray-200:hover, .hover\:bg-gray-300:hover, .hover\:bg-red-50:hover, .hover\:bg-red-100:hover, .focus\:bg-white\/60:focus, .focus\:bg-white\/80:focus, .focus\:bg-gray-50:focus, .focus\:bg-gray-100:focus) {
+	--theme-control-night-bg: var(--night-color-card, var(--color-card));
+	background-color: color-mix(in srgb, var(--theme-control-light-bg), var(--theme-control-night-bg) var(--theme-night-weight));
+}
+
+html :is(.bg-gray-200, .bg-gray-300) {
+	--theme-control-night-bg: color-mix(in srgb, var(--night-color-secondary, var(--color-secondary)) 20%, transparent);
+}
+
+html :is(.hover\:bg-white:hover, .hover\:bg-white\/60:hover, .hover\:bg-white\/80:hover, .hover\:bg-gray-50:hover, .hover\:bg-gray-100:hover, .hover\:bg-gray-100\/50:hover, .hover\:bg-gray-200:hover, .hover\:bg-gray-300:hover, .focus\:bg-white\/60:focus, .focus\:bg-white\/80:focus, .focus\:bg-gray-50:focus, .focus\:bg-gray-100:focus) {
+	--theme-control-night-bg: color-mix(in srgb, var(--night-color-primary, var(--color-primary)) 8%, var(--night-color-card, var(--color-card)));
+}
+
+html .text-gray-400 { --theme-control-light-text: var(--color-gray-400); }
+
+html .text-gray-500 { --theme-control-light-text: var(--color-gray-500); }
+
+html .text-gray-600 { --theme-control-light-text: var(--color-gray-600); }
+
+html .text-gray-700 { --theme-control-light-text: var(--color-gray-700); }
+
+html .text-gray-800 { --theme-control-light-text: var(--color-gray-800); }
+
+html .text-gray-900 { --theme-control-light-text: var(--color-gray-900); }
+
+html .text-slate-400 { --theme-control-light-text: var(--color-slate-400); }
+
+html .text-slate-500 { --theme-control-light-text: var(--color-slate-500); }
+
+html .text-slate-600 { --theme-control-light-text: var(--color-slate-600); }
+
+html .text-slate-700 { --theme-control-light-text: var(--color-slate-700); }
+
+html .text-slate-800 { --theme-control-light-text: var(--color-slate-800); }
+
+html .text-slate-900 { --theme-control-light-text: var(--color-slate-900); }
+
+html .hover\:text-gray-600:hover { --theme-control-light-text: var(--color-gray-600); }
+
+html .hover\:text-gray-700:hover { --theme-control-light-text: var(--color-gray-700); }
+
+html .hover\:text-gray-800:hover { --theme-control-light-text: var(--color-gray-800); }
+
+html .disabled\:text-gray-300:disabled { --theme-control-light-text: var(--color-gray-300); }
+
+html .disabled\:text-slate-300:disabled { --theme-control-light-text: var(--color-slate-300); }
+
+html .text-red-600 { --theme-control-light-text: var(--color-red-600); }
+
+html .text-blue-700 { --theme-control-light-text: var(--color-blue-700); }
+
+html .text-black { --theme-control-light-text: #000; }
+
+html :where(.text-gray-400, .text-gray-500, .text-gray-600, .text-gray-700, .text-gray-800, .text-gray-900, .text-slate-400, .text-slate-500, .text-slate-600, .text-slate-700, .text-slate-800, .text-slate-900, .text-black, .hover\:text-gray-600:hover, .hover\:text-gray-700:hover, .hover\:text-gray-800:hover, .disabled\:text-gray-300:disabled, .disabled\:text-slate-300:disabled, .text-red-600, .text-blue-700) {
+	--theme-control-night-text: var(--night-color-secondary, var(--color-secondary));
+	color: color-mix(in srgb, var(--theme-control-light-text), var(--theme-control-night-text) var(--theme-night-weight));
+}
+
+html :is(.text-gray-700, .text-gray-800, .text-gray-900, .text-slate-700, .text-slate-800, .text-slate-900, .text-black, .hover\:text-gray-600:hover, .hover\:text-gray-700:hover, .hover\:text-gray-800:hover) {
+	--theme-control-night-text: var(--night-color-primary, var(--color-primary));
+}
+
+html .hover\:text-red-500:hover {
+	--theme-control-light-text: var(--color-red-500);
+	--theme-control-night-text: var(--color-red-500);
+}
+
+html .border-gray-200 { --theme-control-light-border: var(--color-gray-200); }
+
+html .border-gray-300 { --theme-control-light-border: var(--color-gray-300); }
+
+html .border-slate-200 { --theme-control-light-border: var(--color-slate-200); }
+
+html .border-slate-300 { --theme-control-light-border: var(--color-slate-300); }
+
+html .disabled\:border-gray-200:disabled { --theme-control-light-border: var(--color-gray-200); }
+
+html .disabled\:border-gray-300:disabled { --theme-control-light-border: var(--color-gray-300); }
+
+html .disabled\:border-slate-200:disabled { --theme-control-light-border: var(--color-slate-200); }
+
+html .border-red-200 {
+	--theme-control-light-border: var(--color-red-200);
+	--theme-control-night-border: color-mix(in srgb, var(--color-red-500) 40%, var(--night-color-border, var(--color-border)));
+}
+
+html :where(.border-gray-200, .border-gray-300, .border-slate-200, .border-slate-300, .disabled\:border-gray-200:disabled, .disabled\:border-gray-300:disabled, .disabled\:border-slate-200:disabled, .border-red-200) {
+	--theme-control-night-border: var(--night-color-border, var(--color-border));
+	border-color: color-mix(in srgb, var(--theme-control-light-border), var(--theme-control-night-border) var(--theme-night-weight));
+}
+
+html.dark :is(.disabled\:text-gray-300, .disabled\:text-slate-300):disabled {
+	opacity: 0.5;
+}
+
+html .bg-red-50 {
+	--theme-control-night-bg: color-mix(in srgb, var(--color-red-500) 12%, var(--night-color-card, var(--color-card)));
+}
+
+html :is(.hover\:bg-red-50:hover, .hover\:bg-red-100:hover) {
+	--theme-control-night-bg: color-mix(in srgb, var(--color-red-500) 22%, var(--night-color-card, var(--color-card)));
+}
+
+html .text-red-600 {
+	--theme-control-night-text: color-mix(in srgb, var(--color-red-500) 60%, var(--night-color-primary, var(--color-primary)));
+}
+
+html :is(.bg-blue-50, .bg-blue-100) {
+	--theme-control-night-bg: color-mix(in srgb, var(--color-blue-500) 12%, var(--night-color-card, var(--color-card)));
+}
+
+html .text-blue-700 {
+	--theme-control-night-text: color-mix(in srgb, var(--color-blue-500) 60%, var(--night-color-primary, var(--color-primary)));
+}
+
+html .code-block-copy-btn,
+html .prose .code-block-copy-btn {
+	--theme-control-light-bg: #ffffffe6;
+	--theme-control-light-border: #0000001a;
+	background-color: color-mix(in srgb, var(--theme-control-light-bg), var(--night-color-card, var(--color-card)) var(--theme-night-weight));
+	border-color: color-mix(in srgb, var(--theme-control-light-border), var(--night-color-border, var(--color-border)) var(--theme-night-weight));
+}
+
+html .code-block-copy-btn:hover,
+html .prose .code-block-copy-btn:hover {
+	--theme-control-light-bg: #fff;
+	--theme-control-light-border: #00000026;
+	background-color: color-mix(in srgb, var(--theme-control-light-bg), var(--night-color-card, var(--color-card)) var(--theme-night-weight));
+	border-color: color-mix(in srgb, var(--theme-control-light-border), var(--night-color-border, var(--color-border)) var(--theme-night-weight));
+}
+
+/* Shiki 同时生成日夜配色，切换主题时无需重新解析整篇文章。 */
+html.dark .shiki,
+html.dark .shiki span {
+	color: var(--shiki-dark) !important;
+	background-color: var(--shiki-dark-bg) !important;
+}

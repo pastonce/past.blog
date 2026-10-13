@@ -9,11 +9,17 @@ import { useSize, useSizeInit } from '@/hooks/use-size'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 import { ScrollTopButton } from '@/components/scroll-top-button'
 import MusicCard from '@/components/music-card'
+import ThemeToggle from '@/components/theme-toggle'
+import { useThemeInit, useThemeStore } from '@/hooks/use-theme'
+import { getThemeAppearance } from '@/lib/theme'
 
 export default function Layout({ children }: PropsWithChildren) {
 	useCenterInit()
 	useSizeInit()
+	useThemeInit()
 	const { cardStyles, siteContent, regenerateKey } = useConfigStore()
+	const mode = useThemeStore(state => state.mode)
+	const appearance = getThemeAppearance(siteContent, mode)
 	const { maxSM, init } = useSize()
 
 	const backgroundImages = (siteContent.backgroundImages ?? []) as Array<{ id: string; url: string }>
@@ -41,7 +47,7 @@ export default function Layout({ children }: PropsWithChildren) {
 			/>
 			{currentBackgroundImage && (
 				<div
-					className='fixed inset-0 z-0 overflow-hidden'
+					className='theme-background-image fixed inset-0 z-0 overflow-hidden'
 					style={{
 						backgroundImage: `url(${currentBackgroundImage.url})`,
 						backgroundSize: 'cover',
@@ -50,7 +56,7 @@ export default function Layout({ children }: PropsWithChildren) {
 					}}
 				/>
 			)}
-			<BlurredBubblesBackground colors={siteContent.backgroundColors} regenerateKey={regenerateKey} />
+			<BlurredBubblesBackground colors={appearance.backgroundColors} alpha={mode === 'dark' ? 0.55 : 0.8} regenerateKey={regenerateKey} />
 
 			<main className='relative z-10 h-full'>
 				{children}
@@ -58,6 +64,7 @@ export default function Layout({ children }: PropsWithChildren) {
 
 				{!maxSM && cardStyles.musicCard?.enabled !== false && <MusicCard />}
 			</main>
+			<ThemeToggle />
 
 			{maxSM && init && <ScrollTopButton className='bg-brand/20 fixed right-6 bottom-8 z-50 shadow-md' />}
 		</>

@@ -11,13 +11,15 @@ import type { SiteContent, CardStyles } from '../stores/config-store'
 import { SiteSettings, type FileItem, type ArtImageUploads, type BackgroundImageUploads, type SocialButtonImageUploads } from './site-settings'
 import { ColorConfig } from './color-config'
 import { HomeLayout } from './home-layout'
+import { DarkModeConfig } from './dark-mode-config'
+import { parseThemeTime } from '@/lib/theme'
 
 interface ConfigDialogProps {
 	open: boolean
 	onClose: () => void
 }
 
-type TabType = 'site' | 'color' | 'layout'
+type TabType = 'site' | 'color' | 'dark' | 'layout'
 
 export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const { isAuth, setPrivateKey } = useAuthStore()
@@ -91,6 +93,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	}
 
 	const handleSaveClick = () => {
+		if (!validateSchedule()) return
 		if (!isAuth) {
 			keyInputRef.current?.click()
 		} else {
@@ -99,6 +102,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	}
 
 	const handleSave = async () => {
+		if (!validateSchedule()) return
 		setIsSaving(true)
 		try {
 			// Calculate removed art images so that we can delete files in repo
@@ -124,7 +128,6 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 			)
 			setSiteContent(formData)
 			setCardStyles(cardStylesData)
-			updateThemeVariables(formData.theme)
 			setFaviconItem(null)
 			setAvatarItem(null)
 			setArtImageUploads({})
@@ -174,7 +177,6 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				metaDescription.setAttribute('content', originalData.meta.description)
 			}
 		}
-		updateThemeVariables(originalData.theme)
 		setFaviconItem(null)
 		setAvatarItem(null)
 		setArtImageUploads({})
@@ -183,25 +185,17 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 		onClose()
 	}
 
-	const updateThemeVariables = (theme?: SiteContent['theme']) => {
-		if (typeof document === 'undefined' || !theme) return
-
-		const { colorBrand, colorBrandSecondary, colorPrimary, colorSecondary, colorBg, colorBorder, colorCard, colorArticle } = theme
-
-		const root = document.documentElement
-
-		if (colorBrand) root.style.setProperty('--color-brand', colorBrand)
-		if (colorBrandSecondary) root.style.setProperty('--color-brand-secondary', colorBrandSecondary)
-		if (colorPrimary) root.style.setProperty('--color-primary', colorPrimary)
-		if (colorSecondary) root.style.setProperty('--color-secondary', colorSecondary)
-		if (colorBg) root.style.setProperty('--color-bg', colorBg)
-		if (colorBorder) root.style.setProperty('--color-border', colorBorder)
-		if (colorCard) root.style.setProperty('--color-card', colorCard)
-		if (colorArticle) root.style.setProperty('--color-article', colorArticle)
+	const validateSchedule = () => {
+		const { enabled, start, end } = formData.darkMode.autoSwitch
+		if (enabled && (parseThemeTime(start) === null || parseThemeTime(end) === null || start === end)) {
+			toast.error('请填写有效且不同的黑夜开始、结束时间')
+			return false
+		}
+		return true
 	}
 
 	const handlePreview = () => {
-		console.log('formData', formData)
+		if (!validateSchedule()) return
 		setSiteContent(formData)
 		setCardStyles(cardStylesData)
 		regenerateBubbles()
@@ -214,8 +208,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				metaDescription.setAttribute('content', formData.meta.description)
 			}
 		}
-		updateThemeVariables(formData.theme)
-
+		// 全局主题监听配置变化，预览、取消、保存共用同一套颜色应用逻辑。
 		onClose()
 	}
 
@@ -224,6 +217,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const tabs: { id: TabType; label: string }[] = [
 		{ id: 'site', label: '网站设置' },
 		{ id: 'color', label: '色彩配置' },
+		{ id: 'dark', label: '夜间模式' },
 		{ id: 'layout', label: '首页布局' }
 	]
 
@@ -241,9 +235,9 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				}}
 			/>
 
-			<DialogModal open={open} onClose={handleCancel} className='card scrollbar-none max-h-[90vh] min-h-[600px] w-[640px] overflow-y-auto'>
-				<div className='mb-6 flex items-center justify-between'>
-					<div className='flex gap-1'>
+			<DialogModal open={open} onClose={handleCancel} className='card scrollbar-none max-h-[90vh] min-h-[600px] w-[640px] overflow-y-auto max-sm:min-h-0 max-sm:w-[calc(100vw-2rem)]'>
+				<div className='mb-6 flex flex-wrap items-center justify-between gap-3'>
+					<div className='flex flex-wrap gap-1'>
 						{tabs.map(tab => (
 							<button
 								key={tab.id}
@@ -296,6 +290,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 						/>
 					)}
 					{activeTab === 'color' && <ColorConfig formData={formData} setFormData={setFormData} />}
+					{activeTab === 'dark' && <DarkModeConfig formData={formData} setFormData={setFormData} />}
 					{activeTab === 'layout' && <HomeLayout cardStylesData={cardStylesData} setCardStylesData={setCardStylesData} onClose={onClose} />}
 				</div>
 			</DialogModal>

@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/next'
 import Layout from '@/layout'
 import Head from '@/layout/head'
 import siteContent from '@/config/site-content.json'
+import { getThemeInitScript } from '@/lib/theme'
 
 const {
 	meta: { title, description },
@@ -34,7 +35,7 @@ const htmlStyle = {
 	'--color-border': theme.colorBorder,
 	'--color-card': theme.colorCard,
 	'--color-article': theme.colorArticle
-}
+} as React.CSSProperties
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 	return (
@@ -42,6 +43,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 			<Head />
 
 			<body>
+				{/* 在内容绘制前应用时间表和本地选择，避免夜间首屏闪白。 */}
+				<script dangerouslySetInnerHTML={{ __html: getThemeInitScript(siteContent) }} />
 				<script
 					dangerouslySetInnerHTML={{
 						__html: `

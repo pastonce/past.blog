@@ -198,7 +198,7 @@ export function ColorPickerPanel({ value, onChange, style, className }: ColorPic
 	return (
 		<div
 			data-color-picker-panel
-			className={cn('w-56 rounded-lg border bg-white p-3 shadow-lg select-none', className, show ? 'opacity-100' : 'opacity-0')}
+			className={cn('bg-bg text-primary w-56 rounded-lg border p-3 shadow-lg select-none', className, show ? 'opacity-100' : 'opacity-0')}
 			style={style}>
 			{/* Saturation and brightness picker */}
 			<div
@@ -268,7 +268,9 @@ export function ColorPickerPanel({ value, onChange, style, className }: ColorPic
 					style={{
 						background: `linear-gradient(to right, hsl(${hsl.h} ${hsl.s * 100}% ${hsl.l * 100}% / 0%), hsl(${hsl.h} ${hsl.s * 100}% ${hsl.l * 100}% / 100%))`
 					}}>
-					<div style={{ left: alphaOffset }} className='absolute h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full border-2 border-white bg-white shadow-md'>
+					<div
+						style={{ left: alphaOffset }}
+						className='absolute h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full border-2 border-white bg-[#fff] shadow-md'>
 						<div className='h-full w-full rounded-full' style={{ backgroundColor: `hsl(${hsl.h} ${hsl.s * 100}% ${hsl.l * 100}% / ${alpha * 100}%)` }} />
 					</div>
 				</div>
@@ -279,7 +281,7 @@ export function ColorPickerPanel({ value, onChange, style, className }: ColorPic
 				type='text'
 				value={hex}
 				onChange={handleHexInputChange}
-				className='w-full rounded-md border px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none'
+				className='bg-secondary/10 focus:ring-brand w-full rounded-md border px-2 py-1 text-sm focus:ring-2 focus:outline-none'
 				placeholder='#000000'
 			/>
 		</div>

@@ -137,12 +137,12 @@
 }
 
 .status-page {
-  --status-sakura-bg: #c7e7c5;                      /* 花瓣色调 */
+  --status-sakura-bg: var(--color-status-sakura, #c7e7c5); /* 花瓣色调 */
   --status-card: var(--color-bg);                     /* 卡片背景 */
   --status-border: var(--color-border);               /* 卡片边框 */
   --status-primary: var(--color-brand);               /* 主色调（猫耳、装饰） */
   --status-secondary: var(--color-brand-secondary);   /* 辅助色（时钟） */
-  --status-accent: #9ee4e4;                         /* 点缀色（用时） */
+  --status-accent: var(--color-status-accent, #9ee4e4);   /* 点缀色（用时） */
   --status-text: var(--color-primary);                /* 主要文字 */
   --status-text-muted: var(--color-secondary);        /* 提示文字 */
 
@@ -164,9 +164,6 @@
 
   overflow: hidden;
 
-  transition:
-    background-color 1.2s ease,
-    color 1.2s ease;
 }
 
 /* === Base === */
@@ -174,20 +171,18 @@
   font-family: var(--status-font-sans);
   color: var(--status-text);
   /* background-color: var(--status-cream); */
-  transition: background-color 1.2s ease, color 1.2s ease;
+  /* 页面颜色随全站变量渐变，避免继承文字颜色再触发一层过渡。 */
 }
 
-/* === Night mode (all devices offline / Monika sleeping) === */
+/* 保留原夜间装饰效果，颜色统一跟随全站主题和首页配置。 */
 .status-page.status-night-mode {
-  --status-sakura-bg: #df85c7;    /* 花瓣色调 */
-  --status-card: #191923;         /* 卡片背景 */
-  --status-border: #343442;       /* 卡片边框 */
-  --status-primary: #C447A8;      /* 主色调（猫耳、装饰） */
-  --status-secondary: #58D6D2;    /* 辅助色（时钟） */
-  --status-accent: #4A3FA0;       /* 点缀色（用时） */
-  --status-text: #F2F0EE;         /* 主要文字 */
-  --status-text-muted: #7a7590;   /* 提示文字 */
-  --status-bg: #191923;           /* 页面背景 */
+  --status-card: var(--color-bg);
+  --status-border: var(--color-border);
+  --status-primary: var(--color-brand);
+  --status-secondary: var(--color-brand-secondary);
+  --status-text: var(--color-primary);
+  --status-text-muted: var(--color-secondary);
+  --status-bg: var(--color-bg);
 }
 
 .status-page.status-night-mode .card-decorated,
@@ -200,13 +195,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .status-page.status-night-mode,
-  .status-page.status-night-mode .card-decorated,
-  .status-page.status-night-mode .vn-bubble,
-  .status-page.status-night-mode .status-bubble,
-  .status-page.status-night-mode .timeline-bar,
-  .status-page.status-night-mode .pill-btn,
-  .status-page.status-night-mode .separator-dashed {
+  .status-page,
+  .status-page .card-decorated,
+  .status-page .vn-bubble,
+  .status-page .status-bubble,
+  .status-page .timeline-bar,
+  .status-page .pill-btn,
+  .status-page .separator-dashed {
     transition: none !important;
   }
   .status-page.status-night-mode .sakura-petal::before {
