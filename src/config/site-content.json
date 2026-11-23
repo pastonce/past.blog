@@ -35,7 +35,14 @@
 			"colorCard": "#232330cc",
 			"colorArticle": "#191923ee"
 		},
-		"backgroundColors": ["#4A3FA0", "#6358C5", "#392B78", "#C447A8", "#E36CC4", "#191923"],
+		"backgroundColors": [
+			"#4A3FA0",
+			"#6358C5",
+			"#392B78",
+			"#C447A8",
+			"#E36CC4",
+			"#191923"
+		],
 		"statusAccent": "#4A3FA0",
 		"statusSakuraBg": "#df85c7",
 		"autoSwitch": {

@@ -37,7 +37,7 @@
 		"height": 66,
 		"offset": 120,
 		"order": 6,
-		"offsetX": null,
+		"offsetX": 100,
 		"offsetY": null,
 		"enabled": true
 	},
@@ -66,20 +66,20 @@
 		"enabled": true
 	},
 	"sakuraButton": {
-		"width": 46,
-		"height": 46,
+		"width": 48,
+		"height": 48,
 		"order": 8,
-		"offsetX": -290,
-		"offsetY": 352,
+		"offsetX": 170,
+		"offsetY": 350,
 		"enabled": true,
 		"icon": "/images/project-icons/sakura.png"
 	},
 	"nahidaButton": {
-		"width": 46,
-		"height": 46,
+		"width": 48,
+		"height": 48,
 		"order": 9,
-		"offsetX": -230,
-		"offsetY": 352,
+		"offsetX": 100,
+		"offsetY": 350,
 		"enabled": true,
 		"icon": "/images/project-icons/nahida1027.png"
 	},
