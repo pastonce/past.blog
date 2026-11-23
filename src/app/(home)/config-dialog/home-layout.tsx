@@ -14,6 +14,8 @@ const CARD_LABELS: Record<string, string> = {
 	socialButtons: '联系',
 	shareCard: '分享',
 	articleCard: '文章',
+	sakuraButton: '魔卡少女樱入口',
+	nahidaButton: '纳西妲生贺入口',
 	writeButtons: '写作',
 	navCard: '导航',
 	likePosition: '点赞',
@@ -39,7 +41,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeL
 	}
 
 	const handleReset = () => {
-		setCardStylesData(cardStylesDefault as CardStyles)
+		setCardStylesData(cardStylesDefault)
 	}
 
 	return (
@@ -74,7 +76,22 @@ export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeL
 				<tbody>
 					{Object.entries(cardStylesData).map(([key, cardStyle]: [string, any]) => (
 						<tr key={key} className='border-b last:border-0'>
-							<td className='px-3 py-2 align-middle whitespace-nowrap'>{CARD_LABELS[key] ?? key.replace(/([A-Z])/g, ' $1').trim()}</td>
+							<td className='px-3 py-2 align-middle whitespace-nowrap'>
+								{CARD_LABELS[key] ?? key.replace(/([A-Z])/g, ' $1').trim()}
+								{(key === 'sakuraButton' || key === 'nahidaButton') && (
+									<input
+										type='text'
+										aria-label={`${CARD_LABELS[key]}图标地址`}
+										value={cardStylesData[key].icon ?? ''}
+										placeholder='默认图标'
+										onChange={e => {
+											const icon = e.target.value
+											setCardStylesData(prev => ({ ...prev, [key]: { ...prev[key], icon } }))
+										}}
+										className='bg-secondary/10 mt-1 block w-28 rounded-lg border px-2 py-1 text-xs'
+									/>
+								)}
+							</td>
 
 							<td className='px-3 py-2'>
 								{cardStyle.width !== undefined ? (

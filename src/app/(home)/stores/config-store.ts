@@ -1,9 +1,19 @@
 import { create } from 'zustand'
 import siteContent from '@/config/site-content.json'
 import cardStyles from '@/config/card-styles.json'
+import cardStylesDefault from '@/config/card-styles-default.json'
 
 export type SiteContent = typeof siteContent
-export type CardStyles = typeof cardStyles
+type CardStyleConfig = typeof cardStylesDefault
+export type CardStyles = {
+	[Key in keyof CardStyleConfig]: Omit<CardStyleConfig[Key], 'offsetX' | 'offsetY'> & {
+		offsetX: number | null
+		offsetY: number | null
+	}
+}
+
+// 旧版布局配置可能没有新版加入的条目，先用默认配置补齐。
+const initialCardStyles: CardStyles = { ...cardStylesDefault, ...cardStyles }
 
 interface ConfigStore {
 	siteContent: SiteContent
@@ -20,7 +30,7 @@ interface ConfigStore {
 
 export const useConfigStore = create<ConfigStore>((set, get) => ({
 	siteContent: { ...siteContent },
-	cardStyles: { ...cardStyles },
+	cardStyles: { ...initialCardStyles },
 	regenerateKey: 0,
 	configDialogOpen: false,
 	setSiteContent: (content: SiteContent) => {
@@ -33,7 +43,7 @@ export const useConfigStore = create<ConfigStore>((set, get) => ({
 		set({ siteContent: { ...siteContent } })
 	},
 	resetCardStyles: () => {
-		set({ cardStyles: { ...cardStyles } })
+		set({ cardStyles: { ...initialCardStyles } })
 	},
 	regenerateBubbles: () => {
 		set(state => ({ regenerateKey: state.regenerateKey + 1 }))

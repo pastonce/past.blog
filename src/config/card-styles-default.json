@@ -65,6 +65,24 @@
 		"offsetY": null,
 		"enabled": true
 	},
+	"sakuraButton": {
+		"width": 46,
+		"height": 46,
+		"order": 8,
+		"offsetX": -290,
+		"offsetY": 352,
+		"enabled": true,
+		"icon": "/images/project-icons/sakura.png"
+	},
+	"nahidaButton": {
+		"width": 46,
+		"height": 46,
+		"order": 9,
+		"offsetX": -230,
+		"offsetY": 352,
+		"enabled": true,
+		"icon": "/images/project-icons/nahida1027.png"
+	},
 	"writeButtons": {
 		"height": 42,
 		"width": 180,
